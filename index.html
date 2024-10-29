@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./css/styles.css">
+  <script defer src="./js/script.js"></script>
+  <title>Halloween Creole</title>
+</head>
+<body>
+  <video autoplay loop muted playsinline id="background-video">
+    <source src="./img/cavero.mp4" type="video/mp4">
+    Tu navegador no soporta la reproducción de video.
+  </video>
+  <div id="container">
+    <div id="scoreboard">
+      <div id="playerHeart" class="score">Halloween: 0</div>
+      <div id="playerSmiley" class="score">Criollo: 0</div>
+      <div id="draw" class="score">Empate: 0</div>
+    </div>
+    <div id="board"></div>
+    <div id="notification" class="hidden"></div>
+  </div>
+</body>
+</html>
