@@ -1,6 +1,6 @@
 const board = document.getElementById('board');
-const playerHeartScore = document.getElementById('playerHeart');
-const playerSmileyScore = document.getElementById('playerSmiley');
+const playerHeartScore = document.getElementById('playerHalloween');
+const playerSmileyScore = document.getElementById('playerCriollo');
 const drawScore = document.getElementById('draw');
 const notification = document.getElementById('notification');
 let currentPlayer = 'heart';
@@ -9,7 +9,6 @@ let scoreHeart = 0;
 let scoreSmiley = 0;
 let scoreDraw = 0;
 
-// Crear celdas del tablero
 for (let i = 0; i < 9; i++) {
   const cell = document.createElement('div');
   cell.classList.add('cell');
@@ -25,10 +24,8 @@ function handleCellClick(event) {
   const index = clickedCell.dataset.index;
 
   if (isCellEmpty(index)) {
-    // Marcar la celda con el símbolo del jugador actual
     clickedCell.classList.add(currentPlayer);
 
-    // Verificar si hay un ganador
     if (checkWinner()) {
       const winner = currentPlayer === 'heart' ? 'Halloween' : 'Criollo';
       showNotification(`¡Jugador ${winner} ha ganado!`);
@@ -37,10 +34,8 @@ function handleCellClick(event) {
       return;
     }
 
-    // Cambiar al siguiente jugador
     currentPlayer = currentPlayer === 'heart' ? 'smiley' : 'heart';
 
-    // Verificar si hay empate
     if (isBoardFull()) {
       showNotification('¡Empate!');
       updateDrawScore();
@@ -54,7 +49,6 @@ function showNotification(message) {
   notification.textContent = message;
   notification.style.display = 'block';
 
-  // Ocultar la notificación después de 2 segundos
   setTimeout(() => {
     notification.style.display = 'none';
   }, 2000);
@@ -119,8 +113,7 @@ function resetGame() {
   cells.forEach(cell => {
     cell.classList.remove('heart', 'smiley');
   });
-
-  // Reiniciar variables
+  
   currentPlayer = 'heart';
   gameOver = false;
 }
