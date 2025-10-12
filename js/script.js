@@ -108,7 +108,6 @@ function updateDrawScore() {
 }
 
 function resetGame() {
-  // Limpiar el contenido de las celdas
   const cells = document.querySelectorAll('.cell');
   cells.forEach(cell => {
     cell.classList.remove('heart', 'smiley');
