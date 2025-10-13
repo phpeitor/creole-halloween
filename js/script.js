@@ -19,7 +19,6 @@ for (let i = 0; i < 9; i++) {
 
 function handleCellClick(event) {
   if (gameOver) return;
-
   const clickedCell = event.target;
   const index = clickedCell.dataset.index;
 
@@ -78,7 +77,6 @@ function checkWinner() {
       return true;
     }
   }
-
   return false;
 }
 
