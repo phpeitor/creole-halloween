@@ -93,16 +93,16 @@ function isBoardFull() {
 function updateScore() {
   if (currentPlayer === 'heart') {
     scoreHeart++;
-    playerHeartScore.textContent = `Halloween: ${scoreHeart}`;
+    playerHeartScore.textContent = `🎃Halloween: ${scoreHeart}`;
   } else {
     scoreSmiley++;
-    playerSmileyScore.textContent = `Criollo: ${scoreSmiley}`;
+    playerSmileyScore.textContent = `🎸Criollo: ${scoreSmiley}`;
   }
 }
 
 function updateDrawScore() {
   scoreDraw++;
-  drawScore.textContent = `Empate: ${scoreDraw}`;
+  drawScore.textContent = `🤝Empate: ${scoreDraw}`;
 }
 
 function resetGame() {

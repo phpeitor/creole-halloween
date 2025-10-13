@@ -15,7 +15,6 @@ body {
   height: 100vh;
   margin: 0;
   background-color: #11be98; 
-  background-image: url('../img/fondo.png'); 
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -66,7 +65,7 @@ body {
   font-size: 48px;
   border: 2px solid #dae7e7;
   cursor: pointer;
-  /*background-color: #ecf0f1;*/
+  background-color: #dbebef0a;
   border-radius: 5px;
   transition: background-color 0.3s;
 }
@@ -92,6 +91,7 @@ body {
   color: orange;
   content: '\1F3B8';
 }
+
 #notification {
   position: fixed;
   top: 50%;
