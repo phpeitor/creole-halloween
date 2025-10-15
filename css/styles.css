@@ -102,3 +102,64 @@ body {
   border-radius: 10px;
   display: none;
 }
+
+/* === CSS extra para animaciones === */
+
+#container { position: relative; }
+
+.cell.win {
+  animation: winGlow 600ms ease-in-out infinite alternate;
+  border-width: 3px;
+}
+
+.cell.win-heart { --glow-color: rgba(255, 115, 0, 0.9); }  /* 🎃 */
+.cell.win-smiley { --glow-color: rgba(255, 215, 0, 0.9); } /* 🎸 */
+
+@keyframes winGlow {
+  from {
+    box-shadow: 0 0 0px var(--glow-color, rgba(255,255,255,0.8));
+    transform: scale(1.02);
+  }
+  to {
+    box-shadow: 0 0 24px var(--glow-color, rgba(255,255,255,0.8));
+    transform: scale(1.06);
+  }
+}
+
+#notification.hidden { display: none; }
+#notification.notify-in {
+  display: block;
+  animation: popIn 300ms ease-out forwards;
+}
+#notification.notify-out {
+  animation: fadeOut 500ms ease-in forwards;
+}
+
+@keyframes popIn {
+  from { transform: translate(-50%, -50%) scale(0.9); opacity: 0; }
+  to   { transform: translate(-50%, -50%) scale(1);    opacity: 1; }
+}
+
+@keyframes fadeOut {
+  to { opacity: 0; transform: translate(-50%, -50%) scale(0.98); }
+}
+
+.burst {
+  position: fixed;
+  z-index: 9999;
+  font-size: 28px;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  animation: burstFly 900ms ease-out forwards, burstFade 1200ms ease-out forwards;
+}
+
+@keyframes burstFly {
+  to {
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(20deg);
+  }
+}
+@keyframes burstFade {
+  0% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}

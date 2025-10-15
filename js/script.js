@@ -25,20 +25,25 @@ function handleCellClick(event) {
   if (isCellEmpty(index)) {
     clickedCell.classList.add(currentPlayer);
 
-    if (checkWinner()) {
+    const winLine = checkWinner();
+    if (winLine) {
+      gameOver = true;
       const winner = currentPlayer === 'heart' ? 'Halloween' : 'Criollo';
-      showNotification(`¡Jugador ${winner} ha ganado!`);
       updateScore();
-      resetGame();
+      highlightWin(winLine, currentPlayer);   
+      showNotification(`¡Jugador ${winner} ha ganado!`);
+      createWinBurst(currentPlayer);         
+      setTimeout(resetGame, 1800);            
       return;
     }
 
     currentPlayer = currentPlayer === 'heart' ? 'smiley' : 'heart';
 
     if (isBoardFull()) {
+      gameOver = true;
       showNotification('¡Empate!');
       updateDrawScore();
-      resetGame();
+      setTimeout(resetGame, 1200);
       return;
     }
   }
@@ -46,11 +51,15 @@ function handleCellClick(event) {
 
 function showNotification(message) {
   notification.textContent = message;
-  notification.style.display = 'block';
-
+  notification.classList.remove('hidden');
+  notification.classList.add('notify-in');
   setTimeout(() => {
-    notification.style.display = 'none';
-  }, 2000);
+    notification.classList.add('notify-out');
+  }, 900);
+  setTimeout(() => {
+    notification.classList.add('hidden');
+    notification.classList.remove('notify-in', 'notify-out');
+  }, 1600);
 }
 
 function isCellEmpty(index) {
@@ -69,15 +78,18 @@ function checkWinner() {
     [0, 4, 8],
     [2, 4, 6]
   ];
-
+  const cells = document.querySelectorAll('.cell');
   for (const line of lines) {
     const [a, b, c] = line;
-    const cells = document.querySelectorAll('.cell');
-    if (cells[a].classList.contains(currentPlayer) && cells[b].classList.contains(currentPlayer) && cells[c].classList.contains(currentPlayer)) {
-      return true;
+    if (
+      cells[a].classList.contains(currentPlayer) &&
+      cells[b].classList.contains(currentPlayer) &&
+      cells[c].classList.contains(currentPlayer)
+    ) {
+      return line;
     }
   }
-  return false;
+  return null;
 }
 
 function isBoardFull() {
@@ -108,9 +120,40 @@ function updateDrawScore() {
 function resetGame() {
   const cells = document.querySelectorAll('.cell');
   cells.forEach(cell => {
-    cell.classList.remove('heart', 'smiley');
+    cell.classList.remove('heart', 'smiley', 'win', 'win-heart', 'win-smiley');
   });
-  
   currentPlayer = 'heart';
   gameOver = false;
+}
+
+function highlightWin(indices, player) {
+  const cells = document.querySelectorAll('.cell');
+  indices.forEach(i => {
+    cells[i].classList.add('win', player === 'heart' ? 'win-heart' : 'win-smiley');
+  });
+}
+
+function createWinBurst(player) {
+  const emoji = player === 'heart' ? '🎃' : '🎸';
+  const burstCount = 14;
+  const fragment = document.createDocumentFragment();
+  const rect = board.getBoundingClientRect();
+
+  for (let i = 0; i < burstCount; i++) {
+    const piece = document.createElement('span');
+    piece.className = 'burst';
+    piece.textContent = emoji;
+    piece.style.left = `${rect.left + rect.width / 2}px`;
+    piece.style.top = `${rect.top + rect.height / 2}px`;
+    const angle = (Math.PI * 2 * i) / burstCount + Math.random() * 0.6;
+    const dist = 120 + Math.random() * 120;
+    piece.style.setProperty('--dx', `${Math.cos(angle) * dist}px`);
+    piece.style.setProperty('--dy', `${Math.sin(angle) * dist}px`);
+    fragment.appendChild(piece);
+  }
+
+  document.body.appendChild(fragment);
+  setTimeout(() => {
+    document.querySelectorAll('.burst').forEach(b => b.remove());
+  }, 1500);
 }
