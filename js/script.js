@@ -9,6 +9,7 @@ let scoreHeart = 0;
 let scoreSmiley = 0;
 let scoreDraw = 0;
 
+
 for (let i = 0; i < 9; i++) {
   const cell = document.createElement('div');
   cell.classList.add('cell');
@@ -157,3 +158,14 @@ function createWinBurst(player) {
     document.querySelectorAll('.burst').forEach(b => b.remove());
   }, 1500);
 }
+
+window.addEventListener('DOMContentLoaded', () => {
+  const overlay = document.querySelector('.keyhole-overlay');
+  if (!overlay) return;
+  document.body.classList.add('no-scroll');
+
+  overlay.addEventListener('animationend', () => {
+    overlay.remove();
+    document.body.classList.remove('no-scroll');
+  });
+});

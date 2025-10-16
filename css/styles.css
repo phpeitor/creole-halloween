@@ -163,3 +163,52 @@ body {
   80% { opacity: 1; }
   100% { opacity: 0; }
 }
+
+@property --s {
+  syntax: '<length-percentage>';
+  inherits: false;
+  initial-value: 10vmin;     
+}
+
+body.no-scroll { overflow: hidden; }
+
+.keyhole-overlay{
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0,0,0,0.96);
+
+  --cx: 50%;
+  --cy: 50%;
+  --s: 10vmin;                  
+  -webkit-mask:
+    url('../resources/halloween.svg') no-repeat var(--cx) var(--cy) / var(--s) auto,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask:
+    url('../resources/halloween.svg') no-repeat var(--cx) var(--cy) / var(--s) auto,
+    linear-gradient(#000 0 0);
+          mask-composite: exclude;
+
+  animation: pumpkin-zoom 3000ms ease-out forwards; 
+}
+
+.keyhole-overlay::after{
+  content: '';
+  position: absolute;
+  left: var(--cx);
+  top:  var(--cy);
+  width: var(--s);
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%,-50%);
+  background: url('../resources/halloween.svg') no-repeat center / contain;
+  filter: drop-shadow(0 10px 24px rgba(0,0,0,.45));
+}
+
+@keyframes pumpkin-zoom{
+  to { --s: 180vmax; }  
+}
+
+@media (prefers-reduced-motion: reduce){
+  .keyhole-overlay { animation: none; --s: 180vmax; }
+}
