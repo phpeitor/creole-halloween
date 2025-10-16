@@ -168,4 +168,12 @@ window.addEventListener('DOMContentLoaded', () => {
     overlay.remove();
     document.body.classList.remove('no-scroll');
   });
+
+  const video = document.getElementById("background-video");
+  const randomIndex = Math.floor(Math.random() * 4) + 1; 
+  const videoSrc = `./resources/video0${randomIndex}.mp4`;
+
+  video.querySelector("source").setAttribute("src", videoSrc);
+  video.load(); 
+  video.play(); 
 });
