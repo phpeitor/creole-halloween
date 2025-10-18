@@ -251,3 +251,50 @@ body.no-scroll { overflow: hidden; }
 .box:hover {
   transform: translate(14%, 35%);
 }
+
+.logo.haunt { animation: floaty 5s ease-in-out infinite; }
+.logo.haunt .box img {
+  filter: drop-shadow(0 0 0.6rem #ff8800) drop-shadow(0 0 1.2rem #ff8800);
+  animation: flicker 3.2s steps(60) infinite;
+}
+@keyframes floaty {
+  0%,100% { transform: translateY(0) rotate(-20deg); }
+  50%     { transform: translateY(-6px) rotate(-20deg); }
+}
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; filter: drop-shadow(0 0 0.6rem #ff8800) drop-shadow(0 0 1.2rem #ff8800) hue-rotate(0deg); }
+  20%, 24%, 55% { opacity: .6; filter: drop-shadow(0 0 0.2rem #ff8800) drop-shadow(0 0 0.6rem #ff00aa) hue-rotate(20deg); }
+}
+
+.spark {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  font-size: clamp(14px, 1.8vw, 26px);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(.6) rotate(0deg);
+  animation: spark-pop 1000ms ease-out forwards;
+  text-shadow: 0 0 6px rgba(255,140,0,.9), 0 0 14px rgba(255,90,0,.5);
+}
+@keyframes spark-pop {
+  0%   { opacity: 0; transform: translate(var(--sx, -50%), var(--sy, -50%)) scale(.4) rotate(-10deg); }
+  10%  { opacity: 1; }
+  70%  { opacity: 1; transform: translate(calc(var(--sx, -50%) + var(--dx, 20px)), calc(var(--sy, -50%) + var(--dy, -20px))) scale(1) rotate(10deg); }
+  100% { opacity: 0; transform: translate(calc(var(--sx, -50%) + var(--dx, 40px)), calc(var(--sy, -50%) + var(--dy, -40px))) scale(.9) rotate(25deg); }
+}
+
+.logo.brain .box::after{
+  content: "🧠";
+  position: absolute;
+  right: -14px;
+  top: -14px;
+  font-size: 34px;
+  filter: drop-shadow(0 0 6px rgba(255,0,128,.8));
+  animation: brainBeat 950ms ease-in-out infinite;
+}
+@keyframes brainBeat {
+  0%,100% { transform: scale(1); }
+  45%     { transform: scale(1.18); }
+}
+
+.fly { position: fixed; z-index: 9998; pointer-events: none; }

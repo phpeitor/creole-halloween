@@ -176,4 +176,66 @@ window.addEventListener('DOMContentLoaded', () => {
   video.querySelector("source").setAttribute("src", videoSrc);
   video.load(); 
   video.play(); 
+
+  const logo = document.querySelector('.logo');
+  if (!logo) return;
+
+  // Activa el look embrujado
+  logo.classList.add('haunt');
+
+  // === Destellos embrujados ===
+  const emojis = ['✨','🕸️','🦇','🎃','🩸','✨','🕯️'];
+  let sparkTimer = null;
+
+  function makeSpark() {
+    const rect = logo.getBoundingClientRect();
+    const x = rect.left + rect.width * (Math.random() * 1.2 - 0.1); // un poco de margen
+    const y = rect.top  + rect.height * (Math.random() * 1.2 - 0.1);
+
+    const el = document.createElement('div');
+    el.className = 'spark';
+    el.textContent = emojis[(Math.random()*emojis.length)|0];
+
+    // Variación de trayectoria
+    const dx = (Math.random() * 120 - 60) + 'px';
+    const dy = (Math.random() * -120) + 'px';
+    el.style.left = x + 'px';
+    el.style.top  = y + 'px';
+    el.style.setProperty('--sx', '-50%');
+    el.style.setProperty('--sy', '-50%');
+    el.style.setProperty('--dx', dx);
+    el.style.setProperty('--dy', dy);
+
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1100);
+  }
+
+  // Comienza los destellos cada ~400–800ms
+  function startSparks() {
+    if (sparkTimer) return;
+    const loop = () => {
+      makeSpark();
+      sparkTimer = setTimeout(loop, 400 + Math.random()*400);
+    };
+    loop();
+  }
+  function stopSparks() {
+    clearTimeout(sparkTimer);
+    sparkTimer = null;
+  }
+
+  // Inicia apenas entras a la página
+  startSparks();
+
+  // Pausa al pasar el mouse (por si quieres leer tranquilo)
+  logo.addEventListener('mouseenter', stopSparks);
+  logo.addEventListener('mouseleave', startSparks);
+
+  logo.addEventListener('click', () => {
+    logo.classList.toggle('brain');
+    // Bonus: ráfaga de destellos cuando activas el cerebro
+    if (logo.classList.contains('brain')) {
+      Array.from({length: 10}).forEach(() => setTimeout(makeSpark, Math.random()*350));
+    }
+  });
 });
