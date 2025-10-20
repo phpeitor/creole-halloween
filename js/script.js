@@ -9,7 +9,6 @@ let scoreHeart = 0;
 let scoreSmiley = 0;
 let scoreDraw = 0;
 
-
 for (let i = 0; i < 9; i++) {
   const cell = document.createElement('div');
   cell.classList.add('cell');
@@ -180,10 +179,8 @@ window.addEventListener('DOMContentLoaded', () => {
   const logo = document.querySelector('.logo');
   if (!logo) return;
 
-  // Activa el look embrujado
   logo.classList.add('haunt');
 
-  // === Destellos embrujados ===
   const emojis = ['✨','🕸️','🦇','🎃','🩸','✨','🕯️'];
   let sparkTimer = null;
 
@@ -196,7 +193,6 @@ window.addEventListener('DOMContentLoaded', () => {
     el.className = 'spark';
     el.textContent = emojis[(Math.random()*emojis.length)|0];
 
-    // Variación de trayectoria
     const dx = (Math.random() * 120 - 60) + 'px';
     const dy = (Math.random() * -120) + 'px';
     el.style.left = x + 'px';
@@ -210,7 +206,6 @@ window.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => el.remove(), 1100);
   }
 
-  // Comienza los destellos cada ~400–800ms
   function startSparks() {
     if (sparkTimer) return;
     const loop = () => {
@@ -224,16 +219,13 @@ window.addEventListener('DOMContentLoaded', () => {
     sparkTimer = null;
   }
 
-  // Inicia apenas entras a la página
   startSparks();
 
-  // Pausa al pasar el mouse (por si quieres leer tranquilo)
   logo.addEventListener('mouseenter', stopSparks);
   logo.addEventListener('mouseleave', startSparks);
 
   logo.addEventListener('click', () => {
     logo.classList.toggle('brain');
-    // Bonus: ráfaga de destellos cuando activas el cerebro
     if (logo.classList.contains('brain')) {
       Array.from({length: 10}).forEach(() => setTimeout(makeSpark, Math.random()*350));
     }

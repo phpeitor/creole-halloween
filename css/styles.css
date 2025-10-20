@@ -296,5 +296,3 @@ body.no-scroll { overflow: hidden; }
   0%,100% { transform: scale(1); }
   45%     { transform: scale(1.18); }
 }
-
-.fly { position: fixed; z-index: 9998; pointer-events: none; }
