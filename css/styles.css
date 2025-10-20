@@ -70,7 +70,7 @@ body {
 }
 
 .cell:hover {
-  background-color: #d6dbdf;
+  background-color: #f8bf39;
 }
 
 .cell::before {
