@@ -186,7 +186,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   function makeSpark() {
     const rect = logo.getBoundingClientRect();
-    const x = rect.left + rect.width * (Math.random() * 1.2 - 0.1); // un poco de margen
+    const x = rect.left + rect.width * (Math.random() * 1.2 - 0.1); 
     const y = rect.top  + rect.height * (Math.random() * 1.2 - 0.1);
 
     const el = document.createElement('div');

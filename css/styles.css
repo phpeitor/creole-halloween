@@ -103,8 +103,6 @@ body {
   display: none;
 }
 
-/* === CSS extra para animaciones === */
-
 #container { position: relative; }
 
 .cell.win {
@@ -177,7 +175,6 @@ body.no-scroll { overflow: hidden; }
   inset: 0;
   z-index: 9999;
   background: rgba(0,0,0,0.96);
-
   --cx: 50%;
   --cy: 50%;
   --s: 10vmin;                  
@@ -189,7 +186,6 @@ body.no-scroll { overflow: hidden; }
     url('../resources/halloween.svg') no-repeat var(--cx) var(--cy) / var(--s) auto,
     linear-gradient(#000 0 0);
           mask-composite: exclude;
-
   animation: pumpkin-zoom 3000ms ease-out forwards; 
 }
 
