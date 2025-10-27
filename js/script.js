@@ -214,6 +214,7 @@ window.addEventListener('DOMContentLoaded', () => {
     };
     loop();
   }
+  
   function stopSparks() {
     clearTimeout(sparkTimer);
     sparkTimer = null;
