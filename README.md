@@ -4,6 +4,7 @@
 
 [![Video](https://img.youtube.com/vi/62yWyHRWk0s/0.jpg)](https://www.youtube.com/watch?v=62yWyHRWk0s)  
 [Ver demov2.0](https://www.youtube.com/watch?v=62yWyHRWk0s)
+[![Video Demo](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube)](https://www.youtube.com/watch?v=62yWyHRWk0s)
 
 ## 🚀 Quick Start
 
