@@ -16,6 +16,7 @@ let myPlayer = null;
 let socket = null;
 let multiplayer = false;
 let rewardTimer = null;
+const REWARD_DURATION = 10000;
 
 function setConnectionStatus(message) {
   if (connectionStatus) connectionStatus.textContent = message;
@@ -26,7 +27,7 @@ function showCardReward() {
   window.clearTimeout(rewardTimer);
   cardReward.hidden = false;
   cardRewardClose?.focus();
-  rewardTimer = window.setTimeout(hideCardReward, 5200);
+  rewardTimer = window.setTimeout(hideCardReward, REWARD_DURATION);
 }
 
 function hideCardReward() {
@@ -90,7 +91,7 @@ function handleCellClick(event) {
       showNotification(`¡Jugador ${winner} ha ganado!`);
       createWinBurst(currentPlayer);         
       showCardReward();
-      setTimeout(resetGame, 5200);
+      setTimeout(resetGame, REWARD_DURATION);
       return;
     }
 
@@ -222,11 +223,13 @@ function initMultiplayer() {
         highlightWin(state.result.line, state.result.player);
         showNotification(`¡Jugador ${state.result.player === 'heart' ? 'Halloween' : 'Criollo'} ha ganado!`);
         createWinBurst(state.result.player);
-        showCardReward();
+        if (state.result.player === myPlayer) {
+          showCardReward();
+        }
       } else {
         showNotification('¡Empate!');
       }
-      window.setTimeout(() => socket.emit('reset-game'), 5200);
+      window.setTimeout(() => socket.emit('reset-game'), REWARD_DURATION);
     }
   });
   socket.on('disconnect', () => setConnectionStatus('Desconectado · modo local pausado'));
