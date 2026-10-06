@@ -21,6 +21,8 @@ La experiencia visual incluye:
 - `css/logo.css`: estilos y animaciones independientes del componente de logo.
 - `css/batman.css`: sprite decorativo del murciélago, posicionado de forma fija.
 - `js/script.js`: estado del juego, eventos y efectos visuales.
+- `server.js`: estado autoritativo de salas multijugador y transporte Socket.IO.
+- `package.json`: configuración de Node.js y dependencias del servidor.
 - `js/logo.js`: comportamiento reutilizable del logo y su lightbox.
 - `resources/video01.mp4` a `resources/video04.mp4`: fondos de video.
 - `resources/logo01.png`, `resources/logo02.png`: identidad visual.
@@ -69,6 +71,18 @@ La experiencia visual incluye:
 - Limpiar timeouts, partículas y clases temporales cuando corresponda.
 - No ocultar errores con catches amplios ni fallbacks que aparenten que una funcionalidad se ejecutó.
 - Mantener la reproducción de video compatible con políticas del navegador (`autoplay`, `muted`, `playsinline`).
+- Socket.IO se carga desde `/socket.io/socket.io.js` cuando la página se sirve con `npm start`.
+- La sala se selecciona con el parámetro `?room=...`; sin parámetro se usa `halloween`.
+- El cliente nunca debe aceptar una jugada remota sin aplicar el estado enviado por el servidor.
+- Si Socket.IO no está disponible, conservar el modo local sin mostrar errores bloqueantes.
+
+## Reglas del servidor multijugador
+
+- Ejecutar con `npm install` y `npm start`; el servidor sirve también los archivos estáticos.
+- El servidor asigna como máximo un jugador `heart` y uno `smiley` por sala; clientes adicionales son espectadores.
+- Validar en servidor índice, turno, jugador, casilla libre y estado de partida.
+- No confiar en puntuaciones o resultados calculados por el navegador.
+- Mantener las salas aisladas por su identificador y eliminar salas vacías.
 
 ## Recursos y ejecución
 

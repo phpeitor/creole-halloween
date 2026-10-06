@@ -118,6 +118,15 @@ body {
   text-transform: uppercase;
 }
 
+.connection-status {
+  margin: -8px 0 16px;
+  color: #9e8dbd;
+  font: 500 10px/1.2 monospace;
+  letter-spacing: .08em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
 #scoreboard {
   display: flex;
   justify-content: center;

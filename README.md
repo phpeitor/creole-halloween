@@ -14,8 +14,13 @@ cd creole-halloween
 ```
 2. **Ejecutar comando**
 ```bash
-index.html
+npm install
+npm start
 ```
+
+Abre `http://localhost:3000` en dos navegadores o pestañas. Ambos entrarán a la sala `halloween` y el servidor asignará automáticamente un jugador Halloween y otro Criollo. Para usar otra sala, añade un identificador en la URL, por ejemplo `http://localhost:3000/?room=amigos`.
+
+El servidor es autoritativo: valida turnos, casillas ocupadas, victorias y empates antes de sincronizar el tablero. Si se abre directamente con `file://`, el juego continúa funcionando en modo local, pero Socket.IO no se activa.
 
 ## Componente de logo reutilizable
 

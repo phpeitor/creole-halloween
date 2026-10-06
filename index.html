@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="./css/logo.css">
   <link rel="stylesheet" href="./css/batman.css">
   <script defer src="./js/logo.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
   <script defer src="./js/script.js"></script>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='75'>🎃</text></svg>" />  
   <title>Halloween Criollo</title>
@@ -32,6 +33,9 @@
       </header>
       <p id="game-status" class="game-status" role="status" aria-live="polite">
         Turno de 🎃 Halloween
+      </p>
+      <p id="connection-status" class="connection-status" role="status">
+        Modo local
       </p>
       <div id="scoreboard">
         <div id="playerHalloween" class="score">🎃Halloween: 0</div>

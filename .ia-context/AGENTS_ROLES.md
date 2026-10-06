@@ -21,6 +21,8 @@ Guía de trabajo para mantener coherente la landing interactiva de Halloween Cri
 - `js/logo.js`: inicialización independiente del logo, partículas y lightbox.
 - `resources/`: videos, logotipos y SVG utilizados por la landing.
 - `README.md`: instrucciones básicas del repositorio y enlaces a demos.
+- `server.js`: servidor Express y Socket.IO; mantiene salas, turnos y validación autoritativa.
+- `package.json`: dependencias y comando de arranque del servidor.
 - `.ia-context/`: contexto y reglas para asistentes de desarrollo.
 
 ## Roles recomendados
@@ -73,6 +75,8 @@ Trabaja en:
 Debe:
 
 - Mantener el flujo de turnos, victorias, empates y reinicio automático.
+- En modo Socket.IO, no confiar en el estado del cliente: las jugadas deben validarse y emitirse desde `server.js`.
+- Mantener fallback local cuando Socket.IO no está disponible o la página se abre con `file://`.
 - Comprobar que los elementos del DOM existan antes de usarlos si se modifica la estructura.
 - Mantener la selección aleatoria entre `video01.mp4` y `video04.mp4`.
 - Limpiar efectos temporales (`.burst`, notificaciones y clases de victoria) para no acumular nodos ni estados.
@@ -116,4 +120,5 @@ Debe:
 - El tablero permite nueve jugadas, detecta las ocho líneas ganadoras y registra empates.
 - El marcador y las notificaciones se actualizan de acuerdo con el resultado.
 - El reinicio no deja clases, partículas ni listeners duplicados.
+- Dos clientes en la misma sala reciben roles diferentes y observan el mismo tablero.
 - La experiencia sigue siendo usable con movimiento reducido y en pantallas pequeñas.

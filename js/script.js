@@ -4,11 +4,24 @@ const playerSmileyScore = document.getElementById('playerCriollo');
 const drawScore = document.getElementById('draw');
 const notification = document.getElementById('notification');
 const gameStatus = document.getElementById('game-status');
+const connectionStatus = document.getElementById('connection-status');
 let currentPlayer = 'heart';
 let gameOver = false;
 let scoreHeart = 0;
 let scoreSmiley = 0;
 let scoreDraw = 0;
+let myPlayer = null;
+let socket = null;
+let multiplayer = false;
+
+function setConnectionStatus(message) {
+  if (connectionStatus) connectionStatus.textContent = message;
+}
+
+function getRoomId() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('room') || 'halloween';
+}
 
 function updateGameStatus() {
   if (!gameStatus) return;
@@ -31,6 +44,15 @@ function handleCellClick(event) {
   if (gameOver) return;
   const clickedCell = event.target;
   const index = clickedCell.dataset.index;
+
+  if (multiplayer) {
+    if (myPlayer !== currentPlayer) {
+      showNotification('No es tu turno');
+      return;
+    }
+    socket.emit('make-move', Number(index));
+    return;
+  }
 
   if (isCellEmpty(index)) {
     clickedCell.classList.add(currentPlayer);
@@ -138,7 +160,54 @@ function resetGame() {
   updateGameStatus();
 }
 
+function applyRemoteState(state) {
+  const cells = document.querySelectorAll('.cell');
+  cells.forEach((cell, index) => {
+    cell.classList.remove('heart', 'smiley', 'win', 'win-heart', 'win-smiley');
+    if (state.board[index]) cell.classList.add(state.board[index]);
+  });
+  currentPlayer = state.currentPlayer;
+  gameOver = state.gameOver;
+  scoreHeart = state.scores.heart;
+  scoreSmiley = state.scores.smiley;
+  scoreDraw = state.scores.draw;
+  playerHeartScore.textContent = `🎃Halloween: ${scoreHeart}`;
+  playerSmileyScore.textContent = `🎸Criollo: ${scoreSmiley}`;
+  drawScore.textContent = `🤝Empate: ${scoreDraw}`;
+  updateGameStatus();
+}
+
+function initMultiplayer() {
+  if (!window.io || window.location.protocol === 'file:') return;
+  socket = window.io();
+  multiplayer = true;
+  setConnectionStatus('Conectando a la partida…');
+
+  socket.on('connect', () => socket.emit('join-game', getRoomId()));
+  socket.on('player-assigned', ({ player, roomId }) => {
+    myPlayer = player;
+    setConnectionStatus(player === 'spectator'
+      ? `Sala ${roomId} · Espectador`
+      : `Sala ${roomId} · Eres ${player === 'heart' ? 'Halloween' : 'Criollo'}`);
+  });
+  socket.on('game-state', state => {
+    applyRemoteState(state);
+    if (state.result) {
+      if (state.result.type === 'win') {
+        highlightWin(state.result.line, state.result.player);
+        showNotification(`¡Jugador ${state.result.player === 'heart' ? 'Halloween' : 'Criollo'} ha ganado!`);
+        createWinBurst(state.result.player);
+      } else {
+        showNotification('¡Empate!');
+      }
+      window.setTimeout(() => socket.emit('reset-game'), 1800);
+    }
+  });
+  socket.on('disconnect', () => setConnectionStatus('Desconectado · modo local pausado'));
+}
+
 updateGameStatus();
+initMultiplayer();
 
 function highlightWin(indices, player) {
   const cells = document.querySelectorAll('.cell');
