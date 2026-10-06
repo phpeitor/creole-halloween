@@ -22,7 +22,7 @@ canvas {
 
 }
 
-/* The controls are useful on the standalone card demo, not inside the game reward. */
+/* Keep dat.GUI interactive in the standalone demo and in the reward iframe. */
 .dg.ac {
-      display: none;
+      z-index: 10;
 }

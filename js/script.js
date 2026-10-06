@@ -16,7 +16,7 @@ let myPlayer = null;
 let socket = null;
 let multiplayer = false;
 let rewardTimer = null;
-const REWARD_DURATION = 10000;
+const REWARD_DURATION = 15000;
 
 function setConnectionStatus(message) {
   if (connectionStatus) connectionStatus.textContent = message;
