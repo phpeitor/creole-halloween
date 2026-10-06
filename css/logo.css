@@ -152,11 +152,11 @@
     opacity: 0;
     transform: translate(calc(var(--sx) + var(--dx)), calc(var(--sy) + var(--dy))) scale(.9);
   }
+}
 
-  @keyframes logo-brain-beat {
-    0%, 100% { transform: scale(1); }
-    45% { transform: scale(1.18); }
-  }
+@keyframes logo-brain-beat {
+  0%, 100% { transform: scale(1); }
+  45% { transform: scale(1.18); }
 }
 
 @media (max-width: 480px) {
