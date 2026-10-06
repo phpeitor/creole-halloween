@@ -23,6 +23,7 @@ Guía de trabajo para mantener coherente la landing interactiva de Halloween Cri
 - `README.md`: instrucciones básicas del repositorio y enlaces a demos.
 - `server.js`: servidor Express y Socket.IO; mantiene salas, turnos y validación autoritativa.
 - `package.json`: dependencias y comando de arranque del servidor.
+- `card.html`, `css/card.css`, `js/card.js`: demo y escena 3D de la carta de calavera, reutilizada como recompensa de victoria.
 - `.ia-context/`: contexto y reglas para asistentes de desarrollo.
 
 ## Roles recomendados
@@ -121,4 +122,5 @@ Debe:
 - El marcador y las notificaciones se actualizan de acuerdo con el resultado.
 - El reinicio no deja clases, partículas ni listeners duplicados.
 - Dos clientes en la misma sala reciben roles diferentes y observan el mismo tablero.
+- La carta 3D aparece como recompensa modal después de una victoria y no interrumpe las jugadas normales.
 - La experiencia sigue siendo usable con movimiento reducido y en pantallas pequeñas.

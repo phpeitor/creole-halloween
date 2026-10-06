@@ -5,6 +5,8 @@ const drawScore = document.getElementById('draw');
 const notification = document.getElementById('notification');
 const gameStatus = document.getElementById('game-status');
 const connectionStatus = document.getElementById('connection-status');
+const cardReward = document.getElementById('card-reward');
+const cardRewardClose = cardReward?.querySelector('.card-reward__close');
 let currentPlayer = 'heart';
 let gameOver = false;
 let scoreHeart = 0;
@@ -13,10 +15,32 @@ let scoreDraw = 0;
 let myPlayer = null;
 let socket = null;
 let multiplayer = false;
+let rewardTimer = null;
 
 function setConnectionStatus(message) {
   if (connectionStatus) connectionStatus.textContent = message;
 }
+
+function showCardReward() {
+  if (!cardReward) return;
+  window.clearTimeout(rewardTimer);
+  cardReward.hidden = false;
+  cardRewardClose?.focus();
+  rewardTimer = window.setTimeout(hideCardReward, 5200);
+}
+
+function hideCardReward() {
+  if (!cardReward) return;
+  cardReward.hidden = true;
+}
+
+cardRewardClose?.addEventListener('click', hideCardReward);
+cardReward?.addEventListener('click', event => {
+  if (event.target === cardReward) hideCardReward();
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') hideCardReward();
+});
 
 function getRoomId() {
   const params = new URLSearchParams(window.location.search);
@@ -65,7 +89,8 @@ function handleCellClick(event) {
       highlightWin(winLine, currentPlayer);   
       showNotification(`¡Jugador ${winner} ha ganado!`);
       createWinBurst(currentPlayer);         
-      setTimeout(resetGame, 1800);            
+      showCardReward();
+      setTimeout(resetGame, 5200);
       return;
     }
 
@@ -197,10 +222,11 @@ function initMultiplayer() {
         highlightWin(state.result.line, state.result.player);
         showNotification(`¡Jugador ${state.result.player === 'heart' ? 'Halloween' : 'Criollo'} ha ganado!`);
         createWinBurst(state.result.player);
+        showCardReward();
       } else {
         showNotification('¡Empate!');
       }
-      window.setTimeout(() => socket.emit('reset-game'), 1800);
+      window.setTimeout(() => socket.emit('reset-game'), 5200);
     }
   });
   socket.on('disconnect', () => setConnectionStatus('Desconectado · modo local pausado'));

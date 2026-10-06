@@ -23,6 +23,7 @@ La experiencia visual incluye:
 - `js/script.js`: estado del juego, eventos y efectos visuales.
 - `server.js`: estado autoritativo de salas multijugador y transporte Socket.IO.
 - `package.json`: configuración de Node.js y dependencias del servidor.
+- `card.html`, `css/card.css`, `js/card.js`: escena 3D reutilizada dentro del modal de recompensa.
 - `js/logo.js`: comportamiento reutilizable del logo y su lightbox.
 - `resources/video01.mp4` a `resources/video04.mp4`: fondos de video.
 - `resources/logo01.png`, `resources/logo02.png`: identidad visual.
@@ -56,6 +57,8 @@ La experiencia visual incluye:
 - Mantener el lenguaje visual arcade retro: bordes luminosos, tipografía monoespaciada, estados hover/focus visibles y panel central destacado.
 - El murciélago debe usar `position: fixed`, `pointer-events: none` y `aria-hidden="true"`; no debe participar en el flujo flex del `body`.
 - La intro de `halloween.svg` debe mantener una salida suave y una alternativa de movimiento reducido.
+- `card.html` debe integrarse mediante el modal/`iframe` de recompensa; no copiar la escena Three.js al documento principal.
+- El modal de carta debe poder cerrarse con botón, `Escape`, clic fuera y cierre automático.
 - Mantener el tablero adaptable a viewport pequeños sin cortar celdas ni notificaciones.
 - Respetar `@media (prefers-reduced-motion: reduce)` al agregar o modificar animaciones.
 - Usar rutas relativas correctas (`../resources/...`) desde `css/styles.css`.

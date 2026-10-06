@@ -10,11 +10,19 @@
 #world {
       width: 100%;
       height: 100vh;
+      overflow: hidden;
       background: black;
 }
 
 canvas {
-      left: calc(50% - 325px);
+      left: 0;
       position: absolute;
+      width: 100% !important;
+      height: 100% !important;
 
+}
+
+/* The controls are useful on the standalone card demo, not inside the game reward. */
+.dg.ac {
+      display: none;
 }

@@ -22,6 +22,8 @@ Abre `http://localhost:3000` en dos navegadores o pestañas. Ambos entrarán a l
 
 El servidor es autoritativo: valida turnos, casillas ocupadas, victorias y empates antes de sincronizar el tablero. Si se abre directamente con `file://`, el juego continúa funcionando en modo local, pero Socket.IO no se activa.
 
+Al ganar una partida, la landing muestra `card.html` dentro de una recompensa modal. La carta 3D se carga en un `iframe` para reutilizar su animación sin mezclar la escena Three.js con el tablero; se cierra con el botón, `Escape`, clic fuera o automáticamente después de unos segundos. `card.html` continúa disponible como demo independiente.
+
 ## Componente de logo reutilizable
 
 El logo interactivo está separado para poder reutilizarlo en otros proyectos sin copiar la lógica del juego:

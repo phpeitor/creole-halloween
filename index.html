@@ -37,6 +37,15 @@
       <p id="connection-status" class="connection-status" role="status">
         Modo local
       </p>
+      <div id="card-reward" class="card-reward" role="dialog" aria-modal="true"
+        aria-label="Recompensa de victoria" hidden>
+        <div class="card-reward__panel">
+          <button type="button" class="card-reward__close" aria-label="Cerrar recompensa">&times;</button>
+          <p class="card-reward__title">★ CARTA DESBLOQUEADA ★</p>
+          <iframe class="card-reward__frame" src="./card.html" title="Carta 3D de calavera"></iframe>
+          <p class="card-reward__hint">Victoria confirmada · Pulsa cerrar para continuar</p>
+        </div>
+      </div>
       <div id="scoreboard">
         <div id="playerHalloween" class="score">🎃Halloween: 0</div>
         <div id="playerCriollo" class="score">🎸Criollo: 0</div>
