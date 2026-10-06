@@ -13,13 +13,22 @@
       <source src="./resources/video01.mp4" type="video/mp4">
       Tu navegador no soporta la reproducción de video.
     </video>
+    <div class="video-atmosphere" aria-hidden="true"></div>
     <div class="logo">
       <div class="box">
         <img src="./resources/logo01.png" alt="Halloween Criollo Logo">
       </div>
     </div>
     <div class="keyhole-overlay"></div>
-    <div id="container">
+    <main id="container">
+      <header class="game-header">
+        <p class="eyebrow">★ RETRO NIGHT ARCADE ★</p>
+        <h1>Halloween <span>vs.</span> Criollo</h1>
+        <p class="game-instructions">Elige una casilla y consigue tres en línea</p>
+      </header>
+      <p id="game-status" class="game-status" role="status" aria-live="polite">
+        Turno de 🎃 Halloween
+      </p>
       <div id="scoreboard">
         <div id="playerHalloween" class="score">🎃Halloween: 0</div>
         <div id="playerCriollo" class="score">🎸Criollo: 0</div>
@@ -27,6 +36,6 @@
       </div>
       <div id="board"></div>
       <div id="notification" class="hidden"></div>
-    </div>
+    </main>
 </body>
 </html>

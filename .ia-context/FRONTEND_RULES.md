@@ -7,15 +7,17 @@ Este repositorio contiene una landing estática llamada **Halloween Criollo**. N
 La experiencia visual incluye:
 
 - Video de fondo elegido aleatoriamente entre cuatro archivos locales.
+- Capa de ambiente oscura con textura scanline para separar visualmente el juego del video.
 - Overlay inicial con forma de calabaza y animación de apertura.
 - Logotipo con efectos de brillo, movimiento y partículas.
 - Juego de Tres en Raya entre `🎃 Halloween` y `🎸 Criollo`.
 - Marcador persistente durante la sesión, detección de victoria/empate y reinicio automático.
+- Indicador de turno accesible y tablero navegable por teclado con botones.
 
 ## Archivos y responsabilidades
 
 - `index.html`: shell HTML y elementos que necesita el runtime.
-- `css/styles.css`: estilos, layout, colores, estados del tablero y animaciones.
+- `css/styles.css`: capa de contraste, layout arcade, colores, estados del tablero y animaciones.
 - `js/script.js`: estado del juego, eventos y efectos visuales.
 - `resources/video01.mp4` a `resources/video04.mp4`: fondos de video.
 - `resources/logo01.png`, `resources/logo02.png`: identidad visual.
@@ -26,6 +28,8 @@ La experiencia visual incluye:
 - Mantener `lang="es"` y el viewport responsive.
 - Mantener las rutas relativas porque el sitio se publica como archivos estáticos.
 - Conservar los IDs consumidos por `js/script.js`: `background-video`, `playerHalloween`, `playerCriollo`, `draw`, `board` y `notification`.
+- Conservar `game-status` con `role="status"` y `aria-live="polite"` para comunicar el turno.
+- Las casillas creadas por JavaScript deben ser botones `type="button"` con etiquetas accesibles.
 - Usar `alt` descriptivo en imágenes y texto comprensible para estados del juego.
 - No incrustar SVG, video o JavaScript grande directamente en `index.html` si puede permanecer en `resources/`, `css/` o `js/`.
 - Evitar dependencias externas para una funcionalidad que pueda resolverse con la plataforma web.
@@ -35,6 +39,8 @@ La experiencia visual incluye:
 - Mantener los estilos en `css/styles.css`; no añadir estilos inline salvo una necesidad puntual generada por JavaScript.
 - Usar clases e IDs existentes de forma consistente y evitar selectores innecesariamente específicos.
 - Preservar el contraste entre el tablero, el marcador y el video de fondo.
+- Mantener `.video-atmosphere` por encima del video y por debajo del contenido; no eliminarla sin una alternativa de contraste equivalente.
+- Mantener el lenguaje visual arcade retro: bordes luminosos, tipografía monoespaciada, estados hover/focus visibles y panel central destacado.
 - Mantener el tablero adaptable a viewport pequeños sin cortar celdas ni notificaciones.
 - Respetar `@media (prefers-reduced-motion: reduce)` al agregar o modificar animaciones.
 - Usar rutas relativas correctas (`../resources/...`) desde `css/styles.css`.

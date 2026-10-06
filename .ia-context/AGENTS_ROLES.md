@@ -6,13 +6,14 @@ Guía de trabajo para mantener coherente la landing interactiva de Halloween Cri
 
 - Es una landing estática temática de Halloween, sin framework ni proceso de build.
 - La experiencia principal es un juego de Tres en Raya entre Halloween y Criollo.
-- La página combina un video de fondo aleatorio, una apertura con máscara de calabaza, un logotipo animado y el tablero interactivo.
+- La página combina un video de fondo aleatorio, una capa de ambiente para mejorar el contraste, una apertura con máscara de calabaza, un logotipo animado y el tablero interactivo.
+- La interfaz usa una estética de arcade retro: panel central con neón, marcador, indicador de turno y casillas navegables por teclado.
 - Todo el contenido se sirve como archivos estáticos desde Apache o cualquier servidor HTTP local.
 - La interfaz y los mensajes están en español.
 
 ## Estructura real
 
-- `index.html`: documento base, video, logotipo, marcador, tablero y contenedor de notificaciones.
+- `index.html`: documento base, video, capa visual, logotipo, encabezado de juego, marcador, tablero y contenedor de notificaciones.
 - `css/styles.css`: layout, identidad visual, tablero, animaciones, overlay de apertura y responsive styling.
 - `js/script.js`: creación del tablero, turnos, validación de victorias/empates, marcador, efectos de celebración y selección de video.
 - `resources/`: videos, logotipos y SVG utilizados por la landing.
@@ -34,6 +35,7 @@ Debe:
 - Mantener la carga de `css/styles.css` y `js/script.js`.
 - Conservar `lang="es"`, el viewport y textos alternativos descriptivos.
 - Mantener los identificadores que usa `script.js`: `background-video`, `playerHalloween`, `playerCriollo`, `draw`, `board` y `notification`.
+- Mantener `game-status` como región de estado accesible y las casillas como botones con `aria-label`.
 - Evitar introducir markup innecesario o dependencias de frameworks.
 
 ### Agent CSS / Visual
@@ -47,6 +49,8 @@ Trabaja en:
 Debe:
 
 - Mantener la estética de Halloween y la legibilidad del tablero sobre el video.
+- Mantener la capa `.video-atmosphere` entre el video y el contenido para que el juego central tenga contraste.
+- Conservar la jerarquía arcade de `.game-header`, `.game-status`, `.score` y `.cell`.
 - Respetar `prefers-reduced-motion` cuando se modifiquen animaciones.
 - Mantener el layout usable en pantallas pequeñas.
 - Referenciar recursos con rutas relativas a `resources/`.

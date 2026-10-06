@@ -5,16 +5,44 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: -1; 
+  z-index: -3;
+  filter: saturate(.72) contrast(1.08);
+}
+
+.video-atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 44%, rgba(30, 10, 48, .18) 0 18%, rgba(4, 5, 18, .65) 70%),
+    linear-gradient(135deg, rgba(8, 5, 24, .66), rgba(52, 13, 56, .42) 48%, rgba(3, 8, 25, .78));
+}
+
+.video-atmosphere::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: .16;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, .12) 0,
+    rgba(255, 255, 255, .12) 1px,
+    transparent 1px,
+    transparent 4px
+  );
 }
 
 body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 32px 20px;
   margin: 0;
-  background-color: #11be98; 
+  overflow-x: hidden;
+  background: #080516;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -22,55 +50,150 @@ body {
 }
 
 #container {
+  position: relative;
+  isolation: isolate;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.5); 
-  padding: 20px;
-  border-radius: 10px;
-  max-width: 800px; 
+  width: min(100%, 680px);
+  box-sizing: border-box;
+  background: linear-gradient(145deg, rgba(23, 12, 48, .94), rgba(8, 8, 26, .94));
+  border: 2px solid #8d38c7;
+  border-radius: 18px;
+  padding: 30px clamp(18px, 5vw, 52px) 38px;
+  box-shadow:
+    0 0 0 5px rgba(10, 6, 26, .9),
+    0 0 0 7px rgba(255, 134, 25, .32),
+    0 18px 60px rgba(0, 0, 0, .7),
+    inset 0 0 35px rgba(128, 38, 196, .14);
   margin: auto; 
+}
+
+.game-header {
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: #ff9e1b;
+  font: 700 11px/1.2 monospace;
+  letter-spacing: .25em;
+}
+
+.game-header h1 {
+  margin: 0;
+  color: #fff4d3;
+  font: 900 clamp(25px, 5vw, 40px)/1.05 monospace;
+  letter-spacing: .04em;
+  text-shadow: 3px 3px 0 #70239b, 0 0 18px rgba(255, 123, 24, .45);
+  text-transform: uppercase;
+}
+
+.game-header h1 span {
+  color: #ff8b20;
+  font-size: .6em;
+}
+
+.game-instructions {
+  margin: 10px 0 0;
+  color: #c8b9e2;
+  font: 500 12px/1.4 monospace;
+}
+
+.game-status {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 0 16px;
+  padding: 10px 14px;
+  border: 1px solid rgba(255, 158, 27, .5);
+  border-radius: 7px;
+  background: rgba(255, 125, 15, .1);
+  color: #ffc15c;
+  font: 700 13px/1.2 monospace;
+  letter-spacing: .08em;
+  text-align: center;
+  text-transform: uppercase;
 }
 
 #scoreboard {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 8px;
   width: 100%;
-  padding: 20px;
+  padding: 0 0 18px;
   box-sizing: border-box;
 }
 
 .score {
-  font-size: 18px;
-  font-weight: bold;
-  color: white;
+  flex: 1;
+  padding: 10px 6px;
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 6px;
+  color: #f6ecff;
+  font: 700 clamp(10px, 2vw, 13px)/1.2 monospace;
+  text-align: center;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, .055);
+}
+
+#playerHalloween {
+  border-color: rgba(255, 139, 32, .65);
+  color: #ffb449;
+}
+
+#playerCriollo {
+  border-color: rgba(118, 240, 255, .5);
+  color: #8cefff;
+}
+
+#draw {
+  color: #d7c9ee;
 }
 
 #board {
   display: grid;
-  grid-template-columns: repeat(3, 150px); 
-  grid-gap: 10px; 
-  padding: 20px; 
+  grid-template-columns: repeat(3, minmax(70px, 132px));
+  gap: clamp(7px, 1.8vw, 12px);
+  width: 100%;
+  justify-content: center;
+  padding: 14px;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, .13);
   border-radius: 10px;
+  background: rgba(4, 3, 18, .5);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, .65);
 }
 
 .cell {
   position: relative;
-  width: 150px; 
-  height: 150px;
+  padding: 0;
+  width: min(100%, 132px);
+  aspect-ratio: 1;
+  height: auto;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 48px;
-  border: 2px solid #dae7e7;
+  font-size: clamp(34px, 7vw, 58px);
+  border: 2px solid #5e3980;
   cursor: pointer;
-  background-color: #dbebef0a;
-  border-radius: 5px;
-  transition: background-color 0.3s;
+  background: linear-gradient(145deg, rgba(53, 28, 85, .72), rgba(15, 13, 42, .9));
+  border-radius: 7px;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, .5);
+  transition: background-color .2s, border-color .2s, transform .2s, box-shadow .2s;
+  font-family: inherit;
 }
 
 .cell:hover {
-  background-color: #f8bf39;
+  background: rgba(255, 139, 32, .18);
+  border-color: #ff9e1b;
+  box-shadow: 0 0 18px rgba(255, 139, 32, .35), inset 0 0 15px rgba(0, 0, 0, .5);
+  transform: translateY(-3px);
+}
+
+.cell:focus-visible {
+  outline: 3px solid #8cefff;
+  outline-offset: 3px;
 }
 
 .cell::before {
@@ -95,11 +218,20 @@ body {
   position: fixed;
   top: 50%;
   left: 50%;
+  z-index: 20;
   transform: translate(-50%, -50%);
-  background-color: #cd5e19;
-  color: white;
-  padding: 20px;
-  border-radius: 10px;
+  width: min(86vw, 390px);
+  box-sizing: border-box;
+  border: 2px solid #ff9e1b;
+  background: #160d2a;
+  color: #fff4d3;
+  padding: 22px 18px;
+  border-radius: 8px;
+  box-shadow: 0 0 0 5px rgba(22, 13, 42, .9), 0 0 30px rgba(255, 139, 32, .65);
+  font: 900 clamp(16px, 4vw, 24px)/1.3 monospace;
+  letter-spacing: .04em;
+  text-align: center;
+  text-transform: uppercase;
   display: none;
 }
 
@@ -291,4 +423,50 @@ body.no-scroll { overflow: hidden; }
 @keyframes brainBeat {
   0%,100% { transform: scale(1); }
   45%     { transform: scale(1.18); }
+}
+
+@media (max-width: 560px) {
+  body {
+    padding: 18px 10px;
+  }
+
+  #container {
+    padding: 24px 12px 26px;
+    border-radius: 12px;
+  }
+
+  .logo {
+    top: 12px;
+    left: 14px;
+    width: 78px;
+  }
+
+  #scoreboard {
+    gap: 5px;
+  }
+
+  .score {
+    padding: 8px 3px;
+    letter-spacing: -.06em;
+  }
+
+  #board {
+    padding: 9px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .video-atmosphere::after,
+  .logo.haunt,
+  .logo.haunt .box img,
+  .cell.win,
+  .spark,
+  .burst {
+    animation: none;
+  }
+
+  .cell,
+  .box {
+    transition: none;
+  }
 }

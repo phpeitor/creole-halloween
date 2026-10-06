@@ -3,14 +3,24 @@ const playerHeartScore = document.getElementById('playerHalloween');
 const playerSmileyScore = document.getElementById('playerCriollo');
 const drawScore = document.getElementById('draw');
 const notification = document.getElementById('notification');
+const gameStatus = document.getElementById('game-status');
 let currentPlayer = 'heart';
 let gameOver = false;
 let scoreHeart = 0;
 let scoreSmiley = 0;
 let scoreDraw = 0;
 
+function updateGameStatus() {
+  if (!gameStatus) return;
+  gameStatus.textContent = currentPlayer === 'heart'
+    ? 'Turno de 🎃 Halloween'
+    : 'Turno de 🎸 Criollo';
+}
+
 for (let i = 0; i < 9; i++) {
-  const cell = document.createElement('div');
+  const cell = document.createElement('button');
+  cell.type = 'button';
+  cell.setAttribute('aria-label', `Casilla ${i + 1}`);
   cell.classList.add('cell');
   cell.dataset.index = i;
   cell.addEventListener('click', handleCellClick);
@@ -38,6 +48,7 @@ function handleCellClick(event) {
     }
 
     currentPlayer = currentPlayer === 'heart' ? 'smiley' : 'heart';
+    updateGameStatus();
 
     if (isBoardFull()) {
       gameOver = true;
@@ -124,7 +135,10 @@ function resetGame() {
   });
   currentPlayer = 'heart';
   gameOver = false;
+  updateGameStatus();
 }
+
+updateGameStatus();
 
 function highlightWin(indices, player) {
   const cells = document.querySelectorAll('.cell');
