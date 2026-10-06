@@ -15,7 +15,9 @@ Guía de trabajo para mantener coherente la landing interactiva de Halloween Cri
 
 - `index.html`: documento base, video, capa visual, logotipo, encabezado de juego, marcador, tablero y contenedor de notificaciones.
 - `css/styles.css`: layout, identidad visual, tablero, animaciones, overlay de apertura y responsive styling.
+- `css/logo.css`: estilos autocontenidos del componente de logo reutilizable.
 - `js/script.js`: creación del tablero, turnos, validación de victorias/empates, marcador, efectos de celebración y selección de video.
+- `js/logo.js`: inicialización independiente del logo, partículas y lightbox.
 - `resources/`: videos, logotipos y SVG utilizados por la landing.
 - `README.md`: instrucciones básicas del repositorio y enlaces a demos.
 - `.ia-context/`: contexto y reglas para asistentes de desarrollo.
@@ -45,6 +47,7 @@ Responsable de la identidad visual y las animaciones.
 Trabaja en:
 
 - `css/styles.css`
+- `css/logo.css`
 
 Debe:
 
@@ -54,6 +57,7 @@ Debe:
 - Respetar `prefers-reduced-motion` cuando se modifiquen animaciones.
 - Mantener el layout usable en pantallas pequeñas.
 - Referenciar recursos con rutas relativas a `resources/`.
+- Mantener el estilo del logo dentro de `css/logo.css`; no volver a mezclarlo en los estilos del juego.
 
 ### Agent JS / Juego
 
@@ -70,6 +74,22 @@ Debe:
 - Mantener la selección aleatoria entre `video01.mp4` y `video04.mp4`.
 - Limpiar efectos temporales (`.burst`, notificaciones y clases de victoria) para no acumular nodos ni estados.
 - Evitar dependencias adicionales y mantener JavaScript vanilla.
+
+### Agent Logo / Componente
+
+Responsable del logo interactivo reutilizable.
+
+Trabaja en:
+
+- `css/logo.css`
+- `js/logo.js`
+
+Debe:
+
+- Mantener la integración basada en `.logo > .box > img`.
+- No depender del tablero, del video ni del overlay de apertura.
+- Evitar listeners duplicados y exponer únicamente la inicialización necesaria.
+- Conservar soporte para clic, teclado, `Escape` y `prefers-reduced-motion`.
 
 ### Agent Docs / IA Context
 

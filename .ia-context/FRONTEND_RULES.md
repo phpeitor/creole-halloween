@@ -18,7 +18,9 @@ La experiencia visual incluye:
 
 - `index.html`: shell HTML y elementos que necesita el runtime.
 - `css/styles.css`: capa de contraste, layout arcade, colores, estados del tablero y animaciones.
+- `css/logo.css`: estilos y animaciones independientes del componente de logo.
 - `js/script.js`: estado del juego, eventos y efectos visuales.
+- `js/logo.js`: comportamiento reutilizable del logo y su lightbox.
 - `resources/video01.mp4` a `resources/video04.mp4`: fondos de video.
 - `resources/logo01.png`, `resources/logo02.png`: identidad visual.
 - `resources/halloween.svg`: recurso de la máscara de apertura.
@@ -33,6 +35,14 @@ La experiencia visual incluye:
 - Usar `alt` descriptivo en imágenes y texto comprensible para estados del juego.
 - No incrustar SVG, video o JavaScript grande directamente en `index.html` si puede permanecer en `resources/`, `css/` o `js/`.
 - Evitar dependencias externas para una funcionalidad que pueda resolverse con la plataforma web.
+
+## Componente de logo reutilizable
+
+- Integrar incluyendo `css/logo.css` y `js/logo.js`.
+- Usar la estructura mínima `.logo > .box > img`.
+- El componente debe funcionar aunque el proyecto no tenga tablero, video, overlay o `script.js`.
+- Mantener `role="button"`, `tabindex="0"` y un `aria-label` en el contenedor cuando el logo sea interactivo.
+- No mover reglas del logo a `styles.css` ni lógica del logo a `script.js`.
 
 ## Reglas CSS
 
