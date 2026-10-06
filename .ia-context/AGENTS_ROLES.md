@@ -16,6 +16,7 @@ Guía de trabajo para mantener coherente la landing interactiva de Halloween Cri
 - `index.html`: documento base, video, capa visual, logotipo, encabezado de juego, marcador, tablero y contenedor de notificaciones.
 - `css/styles.css`: layout, identidad visual, tablero, animaciones, overlay de apertura y responsive styling.
 - `css/logo.css`: estilos autocontenidos del componente de logo reutilizable.
+- `css/batman.css`: sprite decorativo del murciélago y sus reglas de posicionamiento.
 - `js/script.js`: creación del tablero, turnos, validación de victorias/empates, marcador, efectos de celebración y selección de video.
 - `js/logo.js`: inicialización independiente del logo, partículas y lightbox.
 - `resources/`: videos, logotipos y SVG utilizados por la landing.
@@ -53,6 +54,8 @@ Debe:
 
 - Mantener la estética de Halloween y la legibilidad del tablero sobre el video.
 - Mantener la capa `.video-atmosphere` entre el video y el contenido para que el juego central tenga contraste.
+- Mantener el overlay inicial como una intro visual independiente del juego; `halloween.svg` se anima desde el centro y se retira al finalizar.
+- El murciélago es decoración de viewport, no parte del layout del juego; debe permanecer fuera de `#container` y usar `aria-hidden`.
 - Conservar la jerarquía arcade de `.game-header`, `.game-status`, `.score` y `.cell`.
 - Respetar `prefers-reduced-motion` cuando se modifiquen animaciones.
 - Mantener el layout usable en pantallas pequeñas.

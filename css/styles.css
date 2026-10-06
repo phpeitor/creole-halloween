@@ -308,39 +308,67 @@ body.no-scroll { overflow: hidden; }
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: rgba(0,0,0,0.96);
-  --cx: 50%;
-  --cy: 50%;
-  --s: 10vmin;                  
-  -webkit-mask:
-    url('../resources/halloween.svg') no-repeat var(--cx) var(--cy) / var(--s) auto,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-          mask:
-    url('../resources/halloween.svg') no-repeat var(--cx) var(--cy) / var(--s) auto,
-    linear-gradient(#000 0 0);
-          mask-composite: exclude;
-  animation: pumpkin-zoom 3000ms ease-out forwards; 
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(circle, rgba(83, 24, 109, .28), transparent 28%),
+    rgba(3, 2, 12, .98);
+  animation: intro-fade 3200ms ease 900ms forwards;
 }
 
+.keyhole-overlay::before,
 .keyhole-overlay::after{
   content: '';
   position: absolute;
-  left: var(--cx);
-  top:  var(--cy);
-  width: var(--s);
-  aspect-ratio: 1 / 1;
-  transform: translate(-50%,-50%);
+  left: 50%;
+  top: 50%;
+  width: clamp(100px, 20vmin, 240px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
   background: url('../resources/halloween.svg') no-repeat center / contain;
-  filter: drop-shadow(0 10px 24px rgba(0,0,0,.45));
+  pointer-events: none;
 }
 
-@keyframes pumpkin-zoom{
-  to { --s: 180vmax; }  
+.keyhole-overlay::before {
+  filter: blur(22px) brightness(1.7) drop-shadow(0 0 35px #ff7b16);
+  opacity: .7;
+  animation: pumpkin-aura 2400ms cubic-bezier(.2, .8, .2, 1) forwards;
+}
+
+.keyhole-overlay::after {
+  filter: drop-shadow(0 0 10px rgba(255, 150, 30, .9));
+  animation: pumpkin-reveal 2400ms cubic-bezier(.2, .8, .2, 1) forwards;
+}
+
+@keyframes pumpkin-reveal {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(.35) rotate(-8deg); }
+  18% { opacity: 1; }
+  55% { transform: translate(-50%, -50%) scale(1.08) rotate(3deg); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(2.8) rotate(0deg); }
+}
+
+@keyframes pumpkin-aura {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(.5); }
+  20% { opacity: .8; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(3.3); }
+}
+
+@keyframes intro-fade {
+  0% { opacity: 1; }
+  75% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
 }
 
 @media (prefers-reduced-motion: reduce){
-  .keyhole-overlay { animation: none; --s: 180vmax; }
+  .keyhole-overlay {
+    animation: intro-fade 600ms ease forwards;
+  }
+  .keyhole-overlay::before,
+  .keyhole-overlay::after {
+    animation: none;
+    opacity: 0;
+  }
 }
 
 

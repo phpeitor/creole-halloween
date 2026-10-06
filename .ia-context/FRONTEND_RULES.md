@@ -19,6 +19,7 @@ La experiencia visual incluye:
 - `index.html`: shell HTML y elementos que necesita el runtime.
 - `css/styles.css`: capa de contraste, layout arcade, colores, estados del tablero y animaciones.
 - `css/logo.css`: estilos y animaciones independientes del componente de logo.
+- `css/batman.css`: sprite decorativo del murciélago, posicionado de forma fija.
 - `js/script.js`: estado del juego, eventos y efectos visuales.
 - `js/logo.js`: comportamiento reutilizable del logo y su lightbox.
 - `resources/video01.mp4` a `resources/video04.mp4`: fondos de video.
@@ -51,6 +52,8 @@ La experiencia visual incluye:
 - Preservar el contraste entre el tablero, el marcador y el video de fondo.
 - Mantener `.video-atmosphere` por encima del video y por debajo del contenido; no eliminarla sin una alternativa de contraste equivalente.
 - Mantener el lenguaje visual arcade retro: bordes luminosos, tipografía monoespaciada, estados hover/focus visibles y panel central destacado.
+- El murciélago debe usar `position: fixed`, `pointer-events: none` y `aria-hidden="true"`; no debe participar en el flujo flex del `body`.
+- La intro de `halloween.svg` debe mantener una salida suave y una alternativa de movimiento reducido.
 - Mantener el tablero adaptable a viewport pequeños sin cortar celdas ni notificaciones.
 - Respetar `@media (prefers-reduced-motion: reduce)` al agregar o modificar animaciones.
 - Usar rutas relativas correctas (`../resources/...`) desde `css/styles.css`.

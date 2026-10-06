@@ -10,14 +10,30 @@ body {
 }
 
 .bat {
+  position: fixed;
+  top: 8vh;
+  right: 8vw;
+  z-index: 4;
   width: 1px;
   height: 1px;
-  transform: scale(4);
-  position: relative;
-  right: 28px;
-  top: -128px;
+  pointer-events: none;
+  transform: scale(2.2);
   -webkit-animation: 0.4s bat steps(1) infinite;
           animation: 0.4s bat steps(1) infinite;
+}
+
+@media (max-width: 560px) {
+  .bat {
+    top: 7vh;
+    right: 12vw;
+    transform: scale(1.5);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bat {
+    animation: none;
+  }
 }
 
 /* Bat animation */
