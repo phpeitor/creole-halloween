@@ -47,6 +47,7 @@ No se debe abrir la landing directamente con `file://` para probar el modo multi
 - Recompensa 3D exclusiva para el jugador ganador durante 15 segundos.
 - Controles `dat.GUI` interactivos dentro de la carta desbloqueada.
 - Logo independiente con animación, partículas, accesibilidad y lightbox.
+- Murciélago mascota que vuela por los laterales sin tapar el tablero y celebra cada victoria.
 
 ## Multijugador
 
@@ -72,6 +73,7 @@ Browser
   ├── css/styles.css
   ├── css/logo.css
   ├── css/batman.css
+  ├── js/bat.js
   └── js/script.js
           │ Socket.IO
           ▼
@@ -92,7 +94,8 @@ index.html ── iframe ──> card.html
 | `index.html` | Shell de la landing, tablero y modal de recompensa. |
 | `css/styles.css` | Layout arcade, tablero, overlay inicial y modal. |
 | `css/logo.css` | Estilos autocontenidos del logo reutilizable. |
-| `css/batman.css` | Sprite decorativo del murciélago. |
+| `css/batman.css` | Sprite del murciélago mascota. |
+| `js/bat.js` | Vuelo del murciélago mascota y reacción a victorias. |
 | `js/script.js` | Juego local, cliente Socket.IO y sincronización visual. |
 | `js/logo.js` | Interacción, partículas y lightbox del logo. |
 | `server.js` | Express, salas Socket.IO y reglas de la partida. |

@@ -243,6 +243,7 @@ function highlightWin(indices, player) {
   indices.forEach(i => {
     cells[i].classList.add('win', player === 'heart' ? 'win-heart' : 'win-smiley');
   });
+  document.dispatchEvent(new CustomEvent('game:win', { detail: { player } }));
 }
 
 function createWinBurst(player) {
