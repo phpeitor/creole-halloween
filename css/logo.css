@@ -4,6 +4,9 @@
  * <div class="logo" role="button" tabindex="0" aria-label="Abrir logo">
  *   <div class="box"><img src="logo.png" alt="Logo"></div>
  * </div>
+ * Animated variant: add .logo--video and use
+ * <video src="logo.webm" poster="logo.webp" autoplay loop muted playsinline></video>
+ * inside .box (WebM VP9 with alpha; Safari falls back to the poster).
  */
 .logo {
   position: absolute;
@@ -37,9 +40,11 @@
   transition: transform .4s;
 }
 
-.logo .box img {
+.logo .box img,
+.logo .box video {
   display: block;
   width: 100%;
+  height: auto;
 }
 
 .logo .box:hover {
@@ -63,6 +68,43 @@
   font-size: 34px;
   filter: drop-shadow(0 0 6px rgba(255, 0, 128, .8));
   animation: logo-brain-beat 950ms ease-in-out infinite;
+}
+
+/* Animated logo: transparent video, no paper card */
+.logo--video {
+  --logo-tilt: 0deg;
+  top: 4%;
+  left: 2.5%;
+  width: clamp(220px, 21vw, 320px);
+  transform: none;
+  filter: none;
+}
+
+.logo--video::before {
+  display: none;
+}
+
+.logo--video .box {
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.logo--video .box:hover {
+  transform: scale(1.04);
+}
+
+.logo--video:focus-visible {
+  outline: 2px solid #ff8619;
+  outline-offset: 6px;
+  border-radius: 8px;
+}
+
+.logo-lightbox video.logo-lightbox__img {
+  border: 0;
+  box-shadow: none;
+  filter: drop-shadow(0 0 30px rgba(180, 90, 255, .35));
 }
 
 .logo-lightbox {
@@ -136,8 +178,8 @@
 }
 
 @keyframes logo-float {
-  0%, 100% { transform: translateY(0) rotate(-10deg); }
-  50% { transform: translateY(-6px) rotate(-10deg); }
+  0%, 100% { transform: translateY(0) rotate(var(--logo-tilt, -10deg)); }
+  50% { transform: translateY(-6px) rotate(var(--logo-tilt, -10deg)); }
 }
 
 @keyframes logo-flicker {
@@ -170,6 +212,18 @@
 @media (min-width: 481px) and (max-width: 768px) {
   .logo { top: 10px; left: 10px; width: 105px; }
   .logo .box { padding: 3px 5px; }
+}
+
+/* Without side room the animated logo joins the flow above the game */
+@media (max-width: 1199px) {
+  .logo--video {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: min(300px, 78vw);
+    margin: 0 auto 14px;
+  }
+  .logo--video .box { padding: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {

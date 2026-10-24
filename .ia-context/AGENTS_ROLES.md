@@ -19,7 +19,7 @@ Guía de trabajo para mantener coherente la landing interactiva de Halloween Cri
 - `css/batman.css`: sprite decorativo del murciélago y sus reglas de posicionamiento.
 - `js/script.js`: creación del tablero, turnos, validación de victorias/empates, marcador, efectos de celebración y selección de video.
 - `js/logo.js`: inicialización independiente del logo, partículas y lightbox.
-- `resources/`: videos, logotipos y SVG utilizados por la landing.
+- `resources/`: videos, logotipos y SVG utilizados por la landing. El logo de la landing es `phpeitor.webm` (VP9 con transparencia) con `phpeitor-poster.webp` como respaldo estático.
 - `README.md`: instrucciones básicas del repositorio y enlaces a demos.
 - `server.js`: servidor Express y Socket.IO; mantiene salas, turnos y validación autoritativa.
 - `package.json`: dependencias y comando de arranque del servidor.
@@ -94,7 +94,9 @@ Trabaja en:
 
 Debe:
 
-- Mantener la integración basada en `.logo > .box > img`.
+- Mantener la integración basada en `.logo > .box > img` o, en la variante animada `.logo--video`, `.logo > .box > video` con `poster`.
+- En la variante de video: pausar con `prefers-reduced-motion` y mostrar solo el `poster` en Safari (no renderiza la transparencia de WebM).
+- `.logo--video` va en la esquina superior izquierda en pantallas ≥1200 px y pasa al flujo, centrado sobre el panel, en pantallas menores.
 - No depender del tablero, del video ni del overlay de apertura.
 - Evitar listeners duplicados y exponer únicamente la inicialización necesaria.
 - Conservar soporte para clic, teclado, `Escape` y `prefers-reduced-motion`.

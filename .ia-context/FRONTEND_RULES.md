@@ -8,7 +8,7 @@ La experiencia visual incluye:
 
 - Video de fondo elegido aleatoriamente entre cuatro archivos locales.
 - Capa de ambiente oscura con textura scanline para separar visualmente el juego del video.
-- Overlay inicial con forma de calabaza y animación de apertura.
+- Overlay inicial con forma de calabaza y animación de apertura breve (~1,6 s) que se salta con clic o tecla.
 - Logotipo con efectos de brillo, movimiento y partículas.
 - Juego de Tres en Raya entre `🎃 Halloween` y `🎸 Criollo`.
 - Marcador persistente durante la sesión, detección de victoria/empate y reinicio automático.
@@ -26,7 +26,8 @@ La experiencia visual incluye:
 - `card.html`, `css/card.css`, `js/card.js`: escena 3D reutilizada dentro del modal de recompensa.
 - `js/logo.js`: comportamiento reutilizable del logo y su lightbox.
 - `resources/video01.mp4` a `resources/video04.mp4`: fondos de video.
-- `resources/logo01.png`, `resources/logo02.png`: identidad visual.
+- `resources/phpeitor.webm` y `resources/phpeitor-poster.webp`: logo animado con transparencia y su imagen de respaldo.
+- `resources/logo.png`: logo original estático (fuente del WebM).
 - `resources/halloween.svg`: recurso de la máscara de apertura.
 
 ## Reglas HTML
@@ -43,7 +44,7 @@ La experiencia visual incluye:
 ## Componente de logo reutilizable
 
 - Integrar incluyendo `css/logo.css` y `js/logo.js`.
-- Usar la estructura mínima `.logo > .box > img`.
+- Usar la estructura mínima `.logo > .box > img`, o `.logo.logo--video > .box > video` (`autoplay loop muted playsinline` y `poster`) para el logo animado.
 - El componente debe funcionar aunque el proyecto no tenga tablero, video, overlay o `script.js`.
 - Mantener `role="button"`, `tabindex="0"` y un `aria-label` en el contenedor cuando el logo sea interactivo.
 - No mover reglas del logo a `styles.css` ni lógica del logo a `script.js`.
@@ -56,6 +57,7 @@ La experiencia visual incluye:
 - Mantener `.video-atmosphere` por encima del video y por debajo del contenido; no eliminarla sin una alternativa de contraste equivalente.
 - Mantener el lenguaje visual arcade retro: bordes luminosos, tipografía monoespaciada, estados hover/focus visibles y panel central destacado.
 - El murciélago debe usar `position: fixed`, `pointer-events: none` y `aria-hidden="true"`; no debe participar en el flujo flex del `body`.
+- `css/batman.css` no debe redefinir `html` ni `body`; el layout del `body` vive en `styles.css` (columna con `justify-content: safe center`).
 - La intro de `halloween.svg` debe mantener una salida suave y una alternativa de movimiento reducido.
 - `card.html` debe integrarse mediante el modal/`iframe` de recompensa; no copiar la escena Three.js al documento principal.
 - El modal de carta debe poder cerrarse con botón, `Escape`, clic fuera y cierre automático.
