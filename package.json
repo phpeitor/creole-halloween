@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "description": "Landing Halloween Criollo con juego multijugador Socket.IO",
-  "main": "server.js",
+  "main": "js/server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node js/server.js"
   },
   "dependencies": {
     "express": "^4.21.2",
