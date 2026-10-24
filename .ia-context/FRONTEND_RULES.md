@@ -24,7 +24,7 @@ La experiencia visual incluye:
 - `css/batman.css`: sprite del murciélago mascota (colores morado/lila con brillo naranja).
 - `js/bat.js`: vuelo del murciélago mascota (rAF, curvas Bézier, evita el panel, reacciona a `game:win`).
 - `js/script.js`: estado del juego, eventos y efectos visuales.
-- `server.js`: estado autoritativo de salas multijugador y transporte Socket.IO.
+- `js/server.js`: estado autoritativo de salas multijugador y transporte Socket.IO.
 - `package.json`: configuración de Node.js y dependencias del servidor.
 - `card.html`, `css/card.css`, `js/card.js`: escena 3D reutilizada dentro del modal de recompensa.
 - `js/logo.js`: comportamiento reutilizable del logo y su lightbox.

@@ -22,7 +22,7 @@ Guía de trabajo para mantener coherente la landing interactiva de Halloween Cri
 - `js/logo.js`: inicialización independiente del logo, partículas y lightbox.
 - `resources/`: videos, logotipos y SVG utilizados por la landing. El logo de la landing es `phpeitor.webm` (VP9 con transparencia) con `phpeitor-poster.webp` como respaldo estático.
 - `README.md`: instrucciones básicas del repositorio y enlaces a demos.
-- `server.js`: servidor Express y Socket.IO; mantiene salas, turnos y validación autoritativa.
+- `js/server.js`: servidor Express y Socket.IO; mantiene salas, turnos y validación autoritativa. Sirve los estáticos desde la raíz del proyecto (`path.join(__dirname, '..')`).
 - `package.json`: dependencias y comando de arranque del servidor.
 - `card.html`, `css/card.css`, `js/card.js`: demo y escena 3D de la carta de calavera, reutilizada como recompensa de victoria.
 - `.ia-context/`: contexto y reglas para asistentes de desarrollo.
@@ -79,7 +79,7 @@ Trabaja en:
 Debe:
 
 - Mantener el flujo de turnos, victorias, empates y reinicio automático.
-- En modo Socket.IO, no confiar en el estado del cliente: las jugadas deben validarse y emitirse desde `server.js`.
+- En modo Socket.IO, no confiar en el estado del cliente: las jugadas deben validarse y emitirse desde `js/server.js`.
 - Mantener fallback local cuando Socket.IO no está disponible o la página se abre con `file://`.
 - Comprobar que los elementos del DOM existan antes de usarlos si se modifica la estructura.
 - Mantener la selección aleatoria entre `video01.mp4` y `video04.mp4` sin repetir el de la visita anterior (`localStorage` `halloween-last-video`); el `<video>` no lleva `src` en el HTML para no descargar dos videos. Se pausa con la pestaña oculta.
