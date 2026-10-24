@@ -48,6 +48,10 @@ No se debe abrir la landing directamente con `file://` para probar el modo multi
 - Controles `dat.GUI` interactivos dentro de la carta desbloqueada.
 - Logo independiente con animación, partículas, accesibilidad y lightbox.
 - Murciélago mascota que vuela por los laterales sin tapar el tablero y celebra cada victoria.
+- Video de fondo aleatorio sin repetir el de la visita anterior.
+- Botón para copiar el link de la sala y estado "Esperando rival…".
+- Vista previa de la ficha al pasar el mouse y línea neón sobre la jugada ganadora.
+- Sonido arcade opcional (Web Audio), apagado por defecto.
 
 ## Multijugador
 

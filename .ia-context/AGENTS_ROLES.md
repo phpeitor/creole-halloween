@@ -43,6 +43,7 @@ Debe:
 - Conservar `lang="es"`, el viewport y textos alternativos descriptivos.
 - Mantener los identificadores que usa `script.js`: `background-video`, `playerHalloween`, `playerCriollo`, `draw`, `board` y `notification`.
 - Mantener `game-status` como región de estado accesible y las casillas como botones con `aria-label`.
+- `connection-status` y `share-room` viven en `.room-bar`; el botón de compartir solo se muestra en modo multijugador. `sound-toggle` es un botón fijo con `aria-pressed`.
 - Evitar introducir markup innecesario o dependencias de frameworks.
 
 ### Agent CSS / Visual
@@ -81,7 +82,10 @@ Debe:
 - En modo Socket.IO, no confiar en el estado del cliente: las jugadas deben validarse y emitirse desde `server.js`.
 - Mantener fallback local cuando Socket.IO no está disponible o la página se abre con `file://`.
 - Comprobar que los elementos del DOM existan antes de usarlos si se modifica la estructura.
-- Mantener la selección aleatoria entre `video01.mp4` y `video04.mp4`.
+- Mantener la selección aleatoria entre `video01.mp4` y `video04.mp4` sin repetir el de la visita anterior (`localStorage` `halloween-last-video`); el `<video>` no lleva `src` en el HTML para no descargar dos videos. Se pausa con la pestaña oculta.
+- `board.dataset.turn` indica qué ficha se previsualiza al pasar el mouse; vacío cuando la partida terminó o no es el turno del cliente.
+- La línea ganadora (`.win-line`) se dibuja dentro de `#board` y se limpia en `resetGame()` y `applyRemoteState()`.
+- El sonido (Web Audio, sin archivos) está apagado por defecto; la preferencia se guarda en `localStorage` `halloween-sound`.
 - Limpiar efectos temporales (`.burst`, notificaciones y clases de victoria) para no acumular nodos ni estados.
 - `highlightWin()` emite `document` → `game:win` (`detail.player`); los componentes decorativos reaccionan a ese evento sin acoplarse al juego.
 - Evitar dependencias adicionales y mantener JavaScript vanilla.

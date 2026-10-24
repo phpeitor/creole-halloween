@@ -6,7 +6,9 @@ Este repositorio contiene una landing estática llamada **Halloween Criollo**. N
 
 La experiencia visual incluye:
 
-- Video de fondo elegido aleatoriamente entre cuatro archivos locales.
+- Video de fondo elegido aleatoriamente entre cuatro archivos locales, sin repetir el de la visita anterior.
+- Barra de sala con estado ("Esperando rival…" / "Rival conectado") y botón para copiar el link de la sala.
+- Vista previa de la ficha del turno al pasar el mouse, línea neón sobre la jugada ganadora y sonido arcade opcional.
 - Capa de ambiente oscura con textura scanline para separar visualmente el juego del video.
 - Overlay inicial con forma de calabaza y animación de apertura breve (~1,6 s) que se salta con clic o tecla.
 - Logotipo con efectos de brillo, movimiento y partículas.
@@ -37,6 +39,7 @@ La experiencia visual incluye:
 - Mantener las rutas relativas porque el sitio se publica como archivos estáticos.
 - Conservar los IDs consumidos por `js/script.js`: `background-video`, `playerHalloween`, `playerCriollo`, `draw`, `board` y `notification`.
 - Conservar `game-status` con `role="status"` y `aria-live="polite"` para comunicar el turno.
+- Conservar los IDs `share-room` y `sound-toggle` que usa `js/script.js`.
 - Las casillas creadas por JavaScript deben ser botones `type="button"` con etiquetas accesibles.
 - Usar `alt` descriptivo en imágenes y texto comprensible para estados del juego.
 - No incrustar SVG, video o JavaScript grande directamente en `index.html` si puede permanecer en `resources/`, `css/` o `js/`.
@@ -78,6 +81,8 @@ La experiencia visual incluye:
 - Limpiar timeouts, partículas y clases temporales cuando corresponda.
 - No ocultar errores con catches amplios ni fallbacks que aparenten que una funcionalidad se ejecutó.
 - Mantener la reproducción de video compatible con políticas del navegador (`autoplay`, `muted`, `playsinline`).
+- `navigator.clipboard` solo existe en HTTPS o localhost; en HTTP el botón de compartir usa `execCommand('copy')` y, si falla, muestra el link en un `prompt`.
+- El sonido debe seguir apagado por defecto y no reproducirse sin que el usuario lo active.
 - Socket.IO se carga desde `/socket.io/socket.io.js` cuando la página se sirve con `npm start`.
 - La sala se selecciona con el parámetro `?room=...`; sin parámetro se usa `halloween`.
 - El cliente nunca debe aceptar una jugada remota sin aplicar el estado enviado por el servidor.
