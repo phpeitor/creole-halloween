@@ -16,7 +16,6 @@
 <body>
     <div class="bat-mascot" aria-hidden="true"><div class="bat"></div></div>
     <video autoplay loop muted playsinline id="background-video">
-      <source src="./resources/video01.mp4" type="video/mp4">
       Tu navegador no soporta la reproducción de video.
     </video>
     <div class="video-atmosphere" aria-hidden="true"></div>
@@ -36,9 +35,12 @@
       <p id="game-status" class="game-status" role="status" aria-live="polite">
         Turno de 🎃 Halloween
       </p>
-      <p id="connection-status" class="connection-status" role="status">
-        Modo local
-      </p>
+      <div class="room-bar">
+        <p id="connection-status" class="connection-status" role="status">
+          Modo local
+        </p>
+        <button type="button" id="share-room" class="share-room" hidden>Copiar link de la sala</button>
+      </div>
       <div id="card-reward" class="card-reward" role="dialog" aria-modal="true"
         aria-label="Recompensa de victoria" hidden>
         <div class="card-reward__panel">
@@ -56,5 +58,6 @@
       <div id="board"></div>
       <div id="notification" class="hidden"></div>
     </main>
+    <button type="button" id="sound-toggle" class="sound-toggle" aria-pressed="false" aria-label="Activar sonido">🔇</button>
 </body>
 </html>
