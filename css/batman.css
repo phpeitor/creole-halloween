@@ -1,14 +1,3 @@
-html,
-body {
-  height: 100%;
-}
-
-body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .bat {
   position: fixed;
   top: 8vh;

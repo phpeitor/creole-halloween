@@ -275,10 +275,18 @@ window.addEventListener('DOMContentLoaded', () => {
   if (!overlay) return;
   document.body.classList.add('no-scroll');
 
-  overlay.addEventListener('animationend', () => {
+  const closeIntro = () => {
     overlay.remove();
     document.body.classList.remove('no-scroll');
+    document.removeEventListener('keydown', skipIntro);
+  };
+  const skipIntro = () => overlay.classList.add('is-skipping');
+
+  overlay.addEventListener('animationend', event => {
+    if (event.target === overlay) closeIntro();
   });
+  overlay.addEventListener('click', skipIntro);
+  document.addEventListener('keydown', skipIntro);
 
   const video = document.getElementById("background-video");
   const randomIndex = Math.floor(Math.random() * 4) + 1; 

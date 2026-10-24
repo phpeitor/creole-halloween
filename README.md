@@ -118,7 +118,7 @@ El componente no depende del tablero, Socket.IO ni del servidor. Incluye:
 
 - `css/logo.css`
 - `js/logo.js`
-- La estructura `.logo > .box > img`
+- La estructura `.logo > .box > img` (o `.logo.logo--video > .box > video` para la versión animada en WebM)
 
 Integración mínima:
 

@@ -4,8 +4,21 @@
   function initLogo(logo) {
     if (!logo || logo.dataset.logoReady === 'true') return;
 
-    const image = logo.querySelector('.box img');
+    const image = logo.querySelector('.box img, .box video');
     if (!image) return;
+    const isVideo = image.tagName === 'VIDEO';
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Safari renders WebM alpha as an opaque box: keep the static poster there
+    const isSafari = /^((?!chrome|android|crios|fxios).)*safari/i.test(navigator.userAgent);
+
+    if (isVideo && (reducedMotion || isSafari)) {
+      image.removeAttribute('autoplay');
+      image.pause();
+      if (isSafari && image.poster) {
+        image.removeAttribute('src');
+        image.load();
+      }
+    }
 
     logo.dataset.logoReady = 'true';
     logo.classList.add('haunt');
@@ -51,9 +64,21 @@
       overlay.style.setProperty('--lbx', `${rect.left + rect.width / 2 - innerWidth / 2}px`);
       overlay.style.setProperty('--lby', `${rect.top + rect.height / 2 - innerHeight / 2}px`);
 
-      const largeImage = document.createElement('img');
-      largeImage.src = image.currentSrc || image.src;
-      largeImage.alt = image.alt;
+      let largeImage;
+      if (isVideo) {
+        largeImage = document.createElement('video');
+        largeImage.poster = image.poster;
+        if (image.currentSrc) largeImage.src = image.currentSrc;
+        largeImage.muted = true;
+        largeImage.loop = true;
+        largeImage.playsInline = true;
+        largeImage.autoplay = !reducedMotion;
+        largeImage.setAttribute('aria-label', logo.getAttribute('aria-label') || 'Logo');
+      } else {
+        largeImage = document.createElement('img');
+        largeImage.src = image.currentSrc || image.src;
+        largeImage.alt = image.alt;
+      }
       largeImage.className = 'logo-lightbox__img';
       const close = document.createElement('button');
       close.type = 'button';
