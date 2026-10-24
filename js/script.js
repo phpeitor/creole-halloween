@@ -364,7 +364,9 @@ function applyRemoteState(state) {
 
 function initMultiplayer() {
   if (!window.io || window.location.protocol === 'file:') return;
-  socket = window.io();
+  // Ruta relativa a la página: funciona en la raíz (/) y detrás de un proxy en subruta (/creole-halloween/)
+  const basePath = new URL('.', window.location.href).pathname;
+  socket = window.io({ path: `${basePath}socket.io` });
   multiplayer = true;
   setConnectionStatus('Conectando a la partida…');
 

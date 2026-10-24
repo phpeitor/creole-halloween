@@ -7,6 +7,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 const PORT = process.env.PORT || 3000;
+const HOST = process.env.HOST; // en producción 127.0.0.1, detrás del proxy
 // El servidor vive en js/; los archivos estáticos se sirven desde la raíz del proyecto
 const ROOT = path.join(__dirname, '..');
 const rooms = new Map();
@@ -123,6 +124,6 @@ io.on('connection', socket => {
   });
 });
 
-server.listen(PORT, () => {
-  console.log(`Halloween Criollo disponible en http://localhost:${PORT}`);
+server.listen(PORT, HOST, () => {
+  console.log(`Halloween Criollo disponible en http://${HOST || 'localhost'}:${PORT}`);
 });
