@@ -19,7 +19,8 @@ La experiencia visual incluye:
 - `index.html`: shell HTML y elementos que necesita el runtime.
 - `css/styles.css`: capa de contraste, layout arcade, colores, estados del tablero y animaciones.
 - `css/logo.css`: estilos y animaciones independientes del componente de logo.
-- `css/batman.css`: sprite decorativo del murciélago, posicionado de forma fija.
+- `css/batman.css`: sprite del murciélago mascota (colores morado/lila con brillo naranja).
+- `js/bat.js`: vuelo del murciélago mascota (rAF, curvas Bézier, evita el panel, reacciona a `game:win`).
 - `js/script.js`: estado del juego, eventos y efectos visuales.
 - `server.js`: estado autoritativo de salas multijugador y transporte Socket.IO.
 - `package.json`: configuración de Node.js y dependencias del servidor.
@@ -57,6 +58,7 @@ La experiencia visual incluye:
 - Mantener `.video-atmosphere` por encima del video y por debajo del contenido; no eliminarla sin una alternativa de contraste equivalente.
 - Mantener el lenguaje visual arcade retro: bordes luminosos, tipografía monoespaciada, estados hover/focus visibles y panel central destacado.
 - El murciélago debe usar `position: fixed`, `pointer-events: none` y `aria-hidden="true"`; no debe participar en el flujo flex del `body`.
+- El vuelo del murciélago no debe cruzar `#container` (salvo la vuelta de celebración) ni capturar clics; la marca de tiempo de `requestAnimationFrame` puede ser anterior a `performance.now()`, por eso el progreso se limita a [0, 1].
 - `css/batman.css` no debe redefinir `html` ni `body`; el layout del `body` vive en `styles.css` (columna con `justify-content: safe center`).
 - La intro de `halloween.svg` debe mantener una salida suave y una alternativa de movimiento reducido.
 - `card.html` debe integrarse mediante el modal/`iframe` de recompensa; no copiar la escena Three.js al documento principal.
