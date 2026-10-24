@@ -60,18 +60,61 @@ set PORT=4000 && npm start   # CMD
 
 ## Arquitectura
 
-```text
-Navegador                                   Servidor (Node.js)
-─────────                                   ──────────────────
-index.html                                  js/server.js
- ├─ css/styles.css    layout y tablero        ├─ Express: estáticos desde la raíz
- ├─ css/logo.css      logo reutilizable       └─ Socket.IO: salas en memoria
- ├─ css/batman.css    sprite mascota                 │
- ├─ js/script.js      juego + cliente  ◄── Socket.IO ┘
- ├─ js/logo.js        logo + lightbox
- └─ js/bat.js         vuelo mascota
+```mermaid
+flowchart LR
+    subgraph Browser["Navegador"]
+        HTML["index.html"]
+        SCRIPT["js/script.js<br/>juego + cliente Socket.IO"]
+        LOGO["js/logo.js<br/>logo + lightbox"]
+        BAT["js/bat.js<br/>mascota"]
+        CARD["card.html (iframe)<br/>Three.js + dat.GUI"]
+        HTML --> SCRIPT & LOGO & BAT
+        HTML -. victoria .-> CARD
+        SCRIPT -- "evento game:win" --> BAT
+    end
 
-Recompensa: index.html ── iframe ──► card.html (css/card.css, js/card.js)
+    subgraph Server["Servidor Node.js · js/server.js"]
+        STATIC["Express<br/>archivos estáticos"]
+        IO["Socket.IO<br/>salas en memoria"]
+    end
+
+    HTML -- "HTTP GET" --> STATIC
+    SCRIPT <-- "WebSocket" --> IO
+```
+
+### Flujo de una partida multijugador
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant A as Cliente A (Halloween)
+    participant S as js/server.js
+    participant B as Cliente B (Criollo)
+
+    A->>S: join-game("amigos")
+    S-->>A: player-assigned { heart }
+    S-->>A: game-state { players.smiley: false }
+    Note over A: "Esperando rival…" + botón Copiar link
+    B->>S: join-game("amigos")
+    S-->>B: player-assigned { smiley }
+    S-->>A: game-state (rival conectado)
+    S-->>B: game-state (rival conectado)
+
+    loop Hasta victoria o empate
+        A->>S: make-move(index)
+        S->>S: valida turno, casilla y estado
+        S-->>A: game-state
+        S-->>B: game-state
+        Note over A,B: el turno pasa al rival
+    end
+
+    S-->>A: game-state { result: win, line }
+    S-->>B: game-state { result: win, line }
+    Note over A: línea neón + carta 3D (solo el ganador)
+    Note over B: línea neón y marcador
+    A->>S: reset-game (después de 15 s)
+    S-->>A: game-state (tablero vacío)
+    S-->>B: game-state (tablero vacío)
 ```
 
 ### Protocolo Socket.IO
@@ -141,18 +184,105 @@ Admite clic, `Enter`, `Espacio` y `Escape`. Con `prefers-reduced-motion` se paus
 - `prefers-reduced-motion` desactiva la intro animada, el vuelo de la mascota, la animación del logo y los efectos de victoria.
 - Se descarga un solo video de fondo por visita, y se pausa cuando la pestaña está oculta.
 
-## Despliegue
+## Producción (nginx + systemd)
 
-- El servidor sirve también los estáticos, así que basta con `npm start` detrás de un proxy inverso.
-- El proxy debe permitir WebSocket (cabeceras `Upgrade` y `Connection`). Si no, Socket.IO cae a long-polling.
-- Se recomienda HTTPS. `navigator.clipboard` solo funciona en contexto seguro; en HTTP el botón de compartir usa un método de respaldo.
+Ejemplo real: publicar el juego en `https://ubuntux.metadatape.com/creole-halloween/`, una subruta de un sitio que ya sirve nginx.
+
+```mermaid
+flowchart LR
+    U["Navegador"] -- "HTTPS / WSS<br/>/creole-halloween/…" --> N["nginx :443<br/>TLS (Certbot)"]
+    N -- "proxy_pass sin el prefijo<br/>+ Upgrade WebSocket" --> NODE["node js/server.js<br/>127.0.0.1:3200"]
+    NODE --> FS["Archivos del repo<br/>(html, css, js, resources)"]
+    SD["systemd<br/>creole-halloween.service"] -. "arranca y reinicia" .-> NODE
+```
+
+Las rutas del cliente son relativas: `./socket.io/socket.io.js`, y `io({ path })` se calcula a partir de la URL de la página. Por eso el mismo código funciona en la raíz (`/`) y en una subruta, sin configuración extra.
+
+### 1. Servicio systemd
+
+`/etc/systemd/system/creole-halloween.service`:
+
+```ini
+[Unit]
+Description=Halloween Criollo (Express + Socket.IO)
+After=network.target
+
+[Service]
+User=www-data
+WorkingDirectory=/var/www/ubuntux/creole-halloween
+Environment=NODE_ENV=production
+Environment=HOST=127.0.0.1
+Environment=PORT=3200
+ExecStart=/usr/bin/node js/server.js
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```bash
+cd /var/www/ubuntux/creole-halloween && npm ci --omit=dev
+sudo systemctl daemon-reload
+sudo systemctl enable --now creole-halloween
+systemctl status creole-halloween
+```
+
+### 2. nginx
+
+Dentro del bloque `server { … listen 443 ssl; … }` del sitio:
+
+```nginx
+# Sin barra final las rutas relativas se resolverían contra la raíz del sitio
+location = /creole-halloween {
+    return 301 /creole-halloween/;
+}
+
+location /creole-halloween/ {
+    proxy_pass http://127.0.0.1:3200/;          # la barra final quita el prefijo
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;     # WebSocket
+    proxy_set_header Connection "upgrade";
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_read_timeout 1h;                      # conexiones de juego largas
+}
+```
+
+```bash
+sudo nginx -t && sudo systemctl reload nginx
+```
+
+Se usa un `location` de prefijo normal, sin `^~`. Así siguen aplicando antes las reglas regex del sitio, como las que bloquean `.md`, dotfiles o `.lock`.
+
+### 3. Verificación
+
+```bash
+curl -I https://ubuntux.metadatape.com/creole-halloween                         # 301 a la barra final
+curl -I https://ubuntux.metadatape.com/creole-halloween/                        # 200
+curl -s "https://ubuntux.metadatape.com/creole-halloween/socket.io/?EIO=4&transport=polling"   # 0{"sid":…}
+journalctl -u creole-halloween -f                                               # logs
+```
+
+Abre `https://ubuntux.metadatape.com/creole-halloween/?room=prueba` en dos navegadores. El primero muestra "Esperando rival…" y, al entrar el segundo, ambos pasan a "Rival conectado".
+
+### Actualizar a una nueva versión
+
+```bash
+cd /var/www/ubuntux/creole-halloween
+git pull
+npm ci --omit=dev
+sudo systemctl restart creole-halloween   # reiniciar borra las partidas en curso
+```
 
 ## Desarrollo
 
 | Comando | Uso |
 | --- | --- |
 | `npm install` | Instala Express y Socket.IO. |
-| `npm start` | Inicia `js/server.js` (puerto 3000 o `PORT`). |
+| `npm start` | Inicia `js/server.js` (puerto 3000 o `PORT`; `HOST` opcional). |
 | `node --check js/server.js` | Valida la sintaxis del servidor. |
 | `node --check js/script.js` | Valida la sintaxis del cliente. |
 

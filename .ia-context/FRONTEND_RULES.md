@@ -83,7 +83,8 @@ La experiencia visual incluye:
 - Mantener la reproducción de video compatible con políticas del navegador (`autoplay`, `muted`, `playsinline`).
 - `navigator.clipboard` solo existe en HTTPS o localhost; en HTTP el botón de compartir usa `execCommand('copy')` y, si falla, muestra el link en un `prompt`.
 - El sonido debe seguir apagado por defecto y no reproducirse sin que el usuario lo active.
-- Socket.IO se carga desde `/socket.io/socket.io.js` cuando la página se sirve con `npm start`.
+- Socket.IO se carga con ruta relativa (`./socket.io/socket.io.js`) y el cliente conecta con `io({ path: <ruta de la página> + 'socket.io' })`, para funcionar en la raíz y detrás de un proxy en subruta (`/creole-halloween/`). No volver a rutas absolutas.
+- En producción el servidor escucha en `HOST=127.0.0.1` y `PORT=3200`, detrás de nginx (ver README, sección Producción).
 - La sala se selecciona con el parámetro `?room=...`; sin parámetro se usa `halloween`.
 - El cliente nunca debe aceptar una jugada remota sin aplicar el estado enviado por el servidor.
 - Si Socket.IO no está disponible, conservar el modo local sin mostrar errores bloqueantes.
