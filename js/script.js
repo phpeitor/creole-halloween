@@ -9,6 +9,10 @@ const cardReward = document.getElementById('card-reward');
 const cardRewardClose = cardReward?.querySelector('.card-reward__close');
 const shareRoomButton = document.getElementById('share-room');
 const soundToggle = document.getElementById('sound-toggle');
+const chatPanel = document.getElementById('chat');
+const chatLog = document.getElementById('chat-log');
+const chatForm = document.getElementById('chat-form');
+const chatInput = document.getElementById('chat-input');
 let currentPlayer = 'heart';
 let gameOver = false;
 let scoreHeart = 0;
@@ -22,6 +26,10 @@ const REWARD_DURATION = 15000;
 const VIDEO_COUNT = 4;
 const VIDEO_KEY = 'halloween-last-video';
 const SOUND_KEY = 'halloween-sound';
+const CHAT_MAX_MESSAGES = 30;
+const BUBBLE_DURATION = 4000;
+const CHAT_NAMES = { heart: '🎃 Halloween', smiley: '🎸 Criollo', spectator: '👻 Espectador' };
+const bubbleTimers = {};
 
 // localStorage puede no estar disponible (modo privado, file://); solo se pierde la preferencia
 function readStorage(key) {
@@ -67,7 +75,8 @@ const Sound = (() => {
       tone(330, 0, .16, 'triangle', .08);
       tone(262, .16, .26, 'triangle', .08);
     },
-    toggle: () => tone(880, 0, .07, 'triangle', .05)
+    toggle: () => tone(880, 0, .07, 'triangle', .05),
+    chat: () => tone(988, 0, .05, 'triangle', .04)
   };
 
   return {
@@ -165,6 +174,71 @@ function updateRoomStatus(state) {
     setConnectionStatus(`Sala ${roomId} · Eres ${me} · Rival conectado`);
   }
 }
+
+// Chat de la sala estilo DragonBound: registro con el nombre del bando y globo sobre su marcador
+function addChatMessage({ from, text }, animate = true) {
+  if (!chatLog) return;
+  const item = document.createElement('li');
+  item.className = `chat__msg chat__msg--${from}`;
+  const name = document.createElement('span');
+  name.className = 'chat__name';
+  name.textContent = `${CHAT_NAMES[from] || CHAT_NAMES.spectator}${from === myPlayer ? ' (tú)' : ''}:`;
+  item.append(name, ` ${text}`);
+  chatLog.appendChild(item);
+  while (chatLog.children.length > CHAT_MAX_MESSAGES) chatLog.firstElementChild.remove();
+  chatLog.scrollTop = chatLog.scrollHeight;
+  if (!animate) return;
+  showChatBubble(from, text);
+  if (from !== myPlayer) Sound.play('chat');
+}
+
+function showChatBubble(from, text) {
+  const score = from === 'heart' ? playerHeartScore : from === 'smiley' ? playerSmileyScore : null;
+  const scoreboard = score?.parentElement;
+  if (!scoreboard) return;
+  // El globo cuelga del marcador y no de la etiqueta, que se reescribe con textContent en cada estado
+  let bubble = scoreboard.querySelector(`.chat-bubble--${from}`);
+  if (!bubble) {
+    bubble = document.createElement('span');
+    bubble.className = `chat-bubble chat-bubble--${from}`;
+    bubble.setAttribute('aria-hidden', 'true');
+    scoreboard.appendChild(bubble);
+  }
+  bubble.style.left = `${score.offsetLeft + score.offsetWidth / 2}px`;
+  bubble.textContent = text;
+  bubble.classList.remove('is-visible');
+  void bubble.offsetWidth; // reinicia la animación si llega otro mensaje
+  bubble.classList.add('is-visible');
+  window.clearTimeout(bubbleTimers[from]);
+  bubbleTimers[from] = window.setTimeout(() => bubble.classList.remove('is-visible'), BUBBLE_DURATION);
+}
+
+function sendChat(text) {
+  const message = text.trim();
+  if (!message || !socket?.connected) return;
+  socket.emit('chat-message', message);
+}
+
+chatForm?.addEventListener('submit', event => {
+  event.preventDefault();
+  sendChat(chatInput.value);
+  chatInput.value = '';
+});
+
+chatPanel?.querySelectorAll('.chat__emote').forEach(button => {
+  button.addEventListener('click', () => sendChat(button.dataset.text));
+});
+
+// Enter enfoca el chat desde cualquier parte; Escape lo suelta
+document.addEventListener('keydown', event => {
+  if (!chatPanel || chatPanel.hidden || !chatInput) return;
+  if (event.key === 'Enter' && document.activeElement === document.body) {
+    event.preventDefault();
+    chatInput.focus();
+  } else if (event.key === 'Escape' && document.activeElement === chatInput) {
+    chatInput.blur();
+  }
+});
 
 function showCardReward() {
   if (!cardReward) return;
@@ -374,9 +448,15 @@ function initMultiplayer() {
   socket.on('player-assigned', ({ player }) => {
     myPlayer = player;
     if (shareRoomButton) shareRoomButton.hidden = false;
+    if (chatPanel) chatPanel.hidden = false;
     updateRoomStatus(null);
     updateGameStatus();
   });
+  socket.on('chat-history', messages => {
+    if (chatLog) chatLog.replaceChildren();
+    messages.forEach(message => addChatMessage(message, false));
+  });
+  socket.on('chat-message', message => addChatMessage(message));
   socket.on('game-state', state => {
     applyRemoteState(state);
     if (state.result) {
@@ -397,6 +477,7 @@ function initMultiplayer() {
   });
   socket.on('disconnect', () => {
     if (shareRoomButton) shareRoomButton.hidden = true;
+    if (chatPanel) chatPanel.hidden = true;
     setConnectionStatus('Desconectado · modo local pausado');
   });
 }

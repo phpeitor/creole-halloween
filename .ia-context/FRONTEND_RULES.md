@@ -40,6 +40,8 @@ La experiencia visual incluye:
 - Conservar los IDs consumidos por `js/script.js`: `background-video`, `playerHalloween`, `playerCriollo`, `draw`, `board` y `notification`.
 - Conservar `game-status` con `role="status"` y `aria-live="polite"` para comunicar el turno.
 - Conservar los IDs `share-room` y `sound-toggle` que usa `js/script.js`.
+- Conservar los IDs del chat (`chat`, `chat-log`, `chat-form`, `chat-input`). El chat solo se muestra con Socket.IO conectado y los mensajes se pintan siempre con `textContent`, nunca con `innerHTML`.
+- Los globos `.chat-bubble` cuelgan de `#scoreboard`, no de `.score`, porque las etiquetas del marcador se reescriben con `textContent`.
 - Las casillas creadas por JavaScript deben ser botones `type="button"` con etiquetas accesibles.
 - Usar `alt` descriptivo en imágenes y texto comprensible para estados del juego.
 - No incrustar SVG, video o JavaScript grande directamente en `index.html` si puede permanecer en `resources/`, `css/` o `js/`.

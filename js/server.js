@@ -11,6 +11,9 @@ const HOST = process.env.HOST; // en producción 127.0.0.1, detrás del proxy
 // El servidor vive en js/; los archivos estáticos se sirven desde la raíz del proyecto
 const ROOT = path.join(__dirname, '..');
 const rooms = new Map();
+const CHAT_MAX_LENGTH = 120;
+const CHAT_HISTORY = 30;
+const CHAT_COOLDOWN = 700; // ms mínimos entre mensajes del mismo cliente
 
 app.use(express.static(ROOT));
 
@@ -21,6 +24,7 @@ function createGame() {
     scores: { heart: 0, smiley: 0, draw: 0 },
     players: { heart: null, smiley: null },
     gameOver: false,
+    chat: [],
   };
 }
 
@@ -70,7 +74,24 @@ io.on('connection', socket => {
     if (player !== 'spectator') game.players[player] = socket.id;
 
     socket.emit('player-assigned', { player, roomId });
+    socket.emit('chat-history', game.chat);
     emitState(roomId);
+  });
+
+  socket.on('chat-message', rawText => {
+    const roomId = socket.data.roomId;
+    const game = rooms.get(roomId);
+    if (!game || typeof rawText !== 'string') return;
+    // Colapsa espacios y caracteres de control; el cliente pinta con textContent
+    const text = rawText.replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, CHAT_MAX_LENGTH);
+    const now = Date.now();
+    if (!text || now - (socket.data.lastChatAt || 0) < CHAT_COOLDOWN) return;
+    socket.data.lastChatAt = now;
+
+    const message = { from: socket.data.player, text, at: now };
+    game.chat.push(message);
+    if (game.chat.length > CHAT_HISTORY) game.chat.shift();
+    io.to(roomId).emit('chat-message', message);
   });
 
   socket.on('make-move', index => {
