@@ -49,6 +49,7 @@ set PORT=4000 && npm start   # CMD
 - Roles automáticos: el primer cliente es Halloween, el segundo Criollo y el resto espectadores.
 - Validación autoritativa en el servidor: turno, casilla, jugador y estado de la partida.
 - Estado de la sala ("Esperando rival…" / "Rival conectado") y botón para copiar el link de la sala.
+- Chat de sala estilo DragonBound: registro con el bando de cada mensaje, globo de diálogo sobre el marcador del jugador, mensajes rápidos (👏 😂 😱 GG ⏳) y Enter para escribir. El servidor limpia el texto (máx. 120 caracteres), limita a un mensaje cada 700 ms y guarda los últimos 30 por sala.
 
 **Experiencia**
 - Video de fondo aleatorio (4 clips) sin repetir el de la visita anterior.

@@ -56,6 +56,22 @@
         <div id="draw" class="score">🤝Empate: 0</div>
       </div>
       <div id="board"></div>
+      <section id="chat" class="chat" aria-label="Chat de la sala" hidden>
+        <ol id="chat-log" class="chat__log" aria-live="polite"></ol>
+        <div class="chat__emotes" role="group" aria-label="Mensajes rápidos">
+          <button type="button" class="chat__emote" data-text="¡Buena jugada! 👏">👏</button>
+          <button type="button" class="chat__emote" data-text="😂">😂</button>
+          <button type="button" class="chat__emote" data-text="😱">😱</button>
+          <button type="button" class="chat__emote" data-text="¡GG! 🤝">GG</button>
+          <button type="button" class="chat__emote" data-text="¡Apúrate! ⏳">⏳</button>
+        </div>
+        <form id="chat-form" class="chat__form" autocomplete="off">
+          <label for="chat-input" class="chat__channel">[Sala]</label>
+          <input id="chat-input" class="chat__input" type="text" maxlength="120"
+            placeholder="Escribe y pulsa Enter…" aria-label="Mensaje para la sala">
+          <button type="submit" class="chat__send">Enviar</button>
+        </form>
+      </section>
       <div id="notification" class="hidden"></div>
     </main>
     <button type="button" id="sound-toggle" class="sound-toggle" aria-pressed="false" aria-label="Activar sonido">🔇</button>
